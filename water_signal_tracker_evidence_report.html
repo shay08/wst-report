@@ -131,9 +131,7 @@ body {
 }
 
 /* KEY FINDINGS */
-.findings {
-  margin-bottom: 40px;
-}
+.findings { margin-bottom: 40px; }
 
 .finding-item {
   background: #0D1C2E;
@@ -215,9 +213,7 @@ body {
 .duration-ok { color: #00C9B1; }
 
 /* VOICE BOX */
-.voice-section {
-  margin-bottom: 40px;
-}
+.voice-section { margin-bottom: 40px; }
 
 .voice-card {
   background: #0D1C2E;
@@ -238,6 +234,82 @@ body {
 .voice-card .attribution {
   font-size: 11px;
   color: #6B7FA3;
+}
+
+/* 14-DAY SUPPLY TIMELINE */
+.timeline-section { margin-bottom: 40px; }
+
+.timeline-intro {
+  background: #0D1C2E;
+  border-left: 4px solid #F5A623;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #F0F4FF;
+}
+
+.timeline-card {
+  background: #0D1C2E;
+  border: 1px solid #132338;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.timeline-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #F5A623;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tday { text-align: center; }
+
+.tdate {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6B7FA3;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.ttile {
+  border-radius: 6px;
+  padding: 10px 4px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.ttile.no-water {
+  background: rgba(255,75,75,0.25);
+  color: #FF4B4B;
+  border: 1px solid rgba(255,75,75,0.5);
+}
+
+.ttile.water {
+  background: rgba(0,201,177,0.25);
+  color: #00C9B1;
+  border: 1px solid rgba(0,201,177,0.5);
+}
+
+.timeline-finding {
+  font-size: 13px;
+  color: #6B7FA3;
+  line-height: 1.6;
+  padding-top: 16px;
+  border-top: 1px solid #132338;
 }
 
 /* PATTERN ANALYSIS */
@@ -264,10 +336,7 @@ body {
   margin-bottom: 12px;
 }
 
-.pattern-card ul {
-  list-style: none;
-  padding: 0;
-}
+.pattern-card ul { list-style: none; padding: 0; }
 
 .pattern-card ul li {
   font-size: 13px;
@@ -281,20 +350,156 @@ body {
 
 .pattern-card ul li:last-child { border-bottom: none; }
 
-.bar-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.bar-wrap { display: flex; align-items: center; gap: 8px; }
 
-.bar {
-  height: 6px;
-  border-radius: 3px;
-  background: #F5A623;
-}
-
+.bar { height: 6px; border-radius: 3px; background: #F5A623; }
 .bar.red { background: #FF4B4B; }
 .bar.teal { background: #00C9B1; }
+
+/* ── COMMUNITY IMPACT DURATION HISTORY ── */
+.cid-section { margin-bottom: 40px; }
+
+.cid-intro {
+  font-size: 13px;
+  color: #6B7FA3;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.cid-event {
+  background: #0D1C2E;
+  border: 1px solid #132338;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.cid-event-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #132338;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cid-event-left { display: flex; align-items: center; gap: 14px; }
+
+.cid-event-num {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #6B7FA3;
+  text-transform: uppercase;
+}
+
+.cid-event-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F0F4FF;
+}
+
+.cid-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cid-status-badge.active {
+  background: rgba(255,75,75,0.15);
+  color: #FF4B4B;
+  border: 1px solid #FF4B4B;
+}
+
+.cid-status-badge.resolved {
+  background: rgba(0,201,177,0.12);
+  color: #00C9B1;
+  border: 1px solid #00C9B1;
+}
+
+.cid-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FF4B4B;
+  animation: blink-red 1.5s infinite;
+}
+
+@keyframes blink-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.cid-event-body {
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.cid-meta-item .meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #6B7FA3;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cid-meta-item .meta-value {
+  font-size: 13px;
+  color: #F0F4FF;
+}
+
+.cid-counter-display {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.cid-counter-num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #FF4B4B;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.cid-counter-sep {
+  font-size: 1.4rem;
+  color: #132338;
+  line-height: 1.3;
+  font-weight: 300;
+}
+
+.cid-counter-unit {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #6B7FA3;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+  margin-left: 1px;
+}
+
+/* Future event placeholder */
+.cid-future {
+  background: #0D1C2E;
+  border: 1px dashed #132338;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #3A4F6A;
+}
+
+/* ── END COMMUNITY IMPACT DURATION ── */
 
 /* CALL TO ACTION */
 .cta-box {
@@ -315,15 +520,45 @@ body {
 .cta-box p {
   font-size: 14px;
   color: #08111F;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   line-height: 1.6;
 }
 
 .cta-box .cta-links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn-primary {
+  display: inline-block;
+  background: #08111F;
+  color: #F5A623;
   font-size: 13px;
   font-weight: 700;
-  color: #08111F;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity 0.2s;
 }
+
+.cta-btn-primary:hover { opacity: 0.85; }
+
+.cta-btn-secondary {
+  display: inline-block;
+  background: transparent;
+  color: #08111F;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: 2px solid #08111F;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.cta-btn-secondary:hover { background: rgba(8,17,31,0.1); }
 
 /* FOOTER */
 .footer {
@@ -334,11 +569,7 @@ body {
   align-items: center;
 }
 
-.footer .brand {
-  font-size: 13px;
-  font-weight: 700;
-  color: #F5A623;
-}
+.footer .brand { font-size: 13px; font-weight: 700; color: #F5A623; }
 
 .footer .contact {
   font-size: 11px;
@@ -467,94 +698,17 @@ body {
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Mt. Parnassus</td>
-        <td>St. George's</td>
-        <td><span class="badge no-water">No Water</span></td>
-        <td class="duration-critical">7+ days</td>
-        <td>Hilltop / Hillside</td>
-        <td>May 15</td>
-      </tr>
-      <tr>
-        <td>Calliste</td>
-        <td>St. George's</td>
-        <td><span class="badge weak">Weak Pressure</span></td>
-        <td class="duration-ok">1–3 days</td>
-        <td>Flatland</td>
-        <td>May 15</td>
-      </tr>
-      <tr>
-        <td>Laborie</td>
-        <td>St. George's</td>
-        <td><span class="badge no-water">No Water</span></td>
-        <td class="duration-moderate">4–7 days</td>
-        <td>Flatland</td>
-        <td>May 15</td>
-      </tr>
-      <tr>
-        <td>St. Paul's</td>
-        <td>St. George's</td>
-        <td><span class="badge no-water">No Water</span></td>
-        <td class="duration-critical">7+ days</td>
-        <td>Hilltop</td>
-        <td>May 15</td>
-      </tr>
-      <tr>
-        <td>Morne Delice</td>
-        <td>St. George's</td>
-        <td><span class="badge no-water">No Water</span></td>
-        <td class="duration-critical">Over a month</td>
-        <td>Hillside</td>
-        <td>May 15</td>
-      </tr>
-      <tr>
-        <td>Gouyave</td>
-        <td>St. John's</td>
-        <td><span class="badge normal">Normal Flow</span></td>
-        <td class="duration-ok">Less than 1 day</td>
-        <td>Hillside</td>
-        <td>May 17</td>
-      </tr>
-      <tr>
-        <td>Happy Hill</td>
-        <td>St. George's</td>
-        <td><span class="badge normal">Normal Flow</span></td>
-        <td>—</td>
-        <td>Hillside</td>
-        <td>May 17</td>
-      </tr>
-      <tr>
-        <td>La Borie</td>
-        <td>St. George's</td>
-        <td><span class="badge no-water">No Water</span></td>
-        <td class="duration-critical">Over a month</td>
-        <td>Hilltop</td>
-        <td>May 17</td>
-      </tr>
-      <tr>
-        <td>La Borie</td>
-        <td>St. George's</td>
-        <td><span class="badge no-water">No Water</span></td>
-        <td class="duration-critical">Over a month</td>
-        <td>Hilltop</td>
-        <td>May 17</td>
-      </tr>
-      <tr>
-        <td>La Mode / St. George's Estate</td>
-        <td>St. George's</td>
-        <td><span class="badge intermittent">Intermittent</span></td>
-        <td class="duration-ok">1–3 days</td>
-        <td>Not confirmed</td>
-        <td>May 22</td>
-      </tr>
-      <tr>
-        <td>River Road</td>
-        <td>St. George's</td>
-        <td><span class="badge normal">Normal Flow</span></td>
-        <td class="duration-ok">Less than 1 day</td>
-        <td>Flatland</td>
-        <td>May 22</td>
-      </tr>
+      <tr><td>Mt. Parnassus</td><td>St. George's</td><td><span class="badge no-water">No Water</span></td><td class="duration-critical">7+ days</td><td>Hilltop / Hillside</td><td>May 15</td></tr>
+      <tr><td>Calliste</td><td>St. George's</td><td><span class="badge weak">Weak Pressure</span></td><td class="duration-ok">1–3 days</td><td>Flatland</td><td>May 15</td></tr>
+      <tr><td>Laborie</td><td>St. George's</td><td><span class="badge no-water">No Water</span></td><td class="duration-moderate">4–7 days</td><td>Flatland</td><td>May 15</td></tr>
+      <tr><td>St. Paul's</td><td>St. George's</td><td><span class="badge no-water">No Water</span></td><td class="duration-critical">7+ days</td><td>Hilltop</td><td>May 15</td></tr>
+      <tr><td>Morne Delice</td><td>St. George's</td><td><span class="badge no-water">No Water</span></td><td class="duration-critical">Over a month</td><td>Hillside</td><td>May 15</td></tr>
+      <tr><td>Gouyave</td><td>St. John's</td><td><span class="badge normal">Normal Flow</span></td><td class="duration-ok">Less than 1 day</td><td>Hillside</td><td>May 17</td></tr>
+      <tr><td>Happy Hill</td><td>St. George's</td><td><span class="badge normal">Normal Flow</span></td><td>—</td><td>Hillside</td><td>May 17</td></tr>
+      <tr><td>La Borie</td><td>St. George's</td><td><span class="badge no-water">No Water</span></td><td class="duration-critical">Over a month</td><td>Hilltop</td><td>May 17</td></tr>
+      <tr><td>La Borie</td><td>St. George's</td><td><span class="badge no-water">No Water</span></td><td class="duration-critical">Over a month</td><td>Hilltop</td><td>May 17</td></tr>
+      <tr><td>La Mode / St. George's Estate</td><td>St. George's</td><td><span class="badge intermittent">Intermittent</span></td><td class="duration-ok">1–3 days</td><td>Not confirmed</td><td>May 22</td></tr>
+      <tr><td>River Road</td><td>St. George's</td><td><span class="badge normal">Normal Flow</span></td><td class="duration-ok">Less than 1 day</td><td>Flatland</td><td>May 22</td></tr>
     </tbody>
   </table>
 
@@ -576,6 +730,78 @@ body {
     <div class="voice-card">
       <div class="quote">"Water comes every other day or two, sometimes for a few hours or the entire time. Pressure is usually normal, with some days being a bit low."</div>
       <div class="attribution">La Mode / St. George's Estate — Intermittent supply · May 22, 2026</div>
+    </div>
+  </div>
+
+  <!-- 14-DAY SUPPLY TIMELINE -->
+  <div class="timeline-section">
+    <div class="section-title">Longitudinal Field Documentation — Morne Delice</div>
+    <div class="timeline-intro">
+      The following longitudinal field documentation from <strong style="color:#F5A623">Morne Delice, St. George's (Hillside elevation)</strong> represents the most detailed single-community water access record in this pilot. It reveals a pattern that goes beyond seasonal shortage — exposing an undisclosed valve rotation cycle delivering critically insufficient supply windows to affected households.
+    </div>
+    <div class="timeline-card">
+      <div class="timeline-label">14-DAY SUPPLY TIMELINE — MAY 15–28, 2026</div>
+      <div class="timeline-grid">
+        <div class="tday">
+          <div class="tdate">May 15</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 16</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 17</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 18</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 19</div>
+          <div class="ttile water">WATER 24H</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 20</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 21</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 22</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 23</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 24</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 25</div>
+          <div class="ttile water">WATER 24H</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 26</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 27</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+        <div class="tday">
+          <div class="tdate">May 28</div>
+          <div class="ttile no-water">NO WATER</div>
+        </div>
+      </div>
+      <div class="timeline-finding">
+        <span style="color:#FF4B4B;font-weight:800;">Pattern confirmed:</span> 2 days of supply across 14 days — one every 6–7 days. Supply window is undisclosed, unpredictable, and critically insufficient for household needs.
+      </div>
     </div>
   </div>
 
@@ -601,12 +827,67 @@ body {
     </div>
   </div>
 
+  <!-- ── COMMUNITY IMPACT DURATION™ HISTORY ── -->
+  <div class="cid-section">
+    <div class="section-title">Community Impact Duration™ History</div>
+    <p class="cid-intro">
+      Community Impact Duration™ measures the documented length of a disruption cycle from first confirmed community signal to restoration. Each event is logged here as a permanent record of impact — the gap between declared service and actual household access.
+    </p>
+
+    <!-- EVENT #1 — ACTIVE -->
+    <div class="cid-event">
+      <div class="cid-event-header">
+        <div class="cid-event-left">
+          <span class="cid-event-num">Event #1</span>
+          <span class="cid-event-name">Current Disruption Cycle — Multi-Parish</span>
+        </div>
+        <span class="cid-status-badge active">
+          <span class="cid-status-dot"></span>
+          Active
+        </span>
+      </div>
+      <div class="cid-event-body">
+        <div class="cid-meta-item">
+          <div class="meta-label">Anchor Date</div>
+          <div class="meta-value">May 28, 2026 · 2:00 PM AST</div>
+        </div>
+        <div class="cid-meta-item">
+          <div class="meta-label">Primary Zone</div>
+          <div class="meta-value">St. George's Parish · Hilltop Communities</div>
+        </div>
+        <div class="cid-meta-item">
+          <div class="meta-label">Duration · Counting</div>
+          <div class="cid-counter-display">
+            <div>
+              <span class="cid-counter-num" id="ev1-days">—</span>
+              <span class="cid-counter-unit">d</span>
+            </div>
+            <span class="cid-counter-sep">:</span>
+            <div>
+              <span class="cid-counter-num" id="ev1-hours">—</span>
+              <span class="cid-counter-unit">h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUTURE EVENTS PLACEHOLDER -->
+    <div class="cid-future">
+      <span style="font-size:18px;display:block;margin-bottom:6px;color:#1e3a55;">+</span>
+      Future disruption events will be logged here as the platform scales across all 6 parishes.
+    </div>
+  </div>
+  <!-- ── END COMMUNITY IMPACT DURATION™ ── -->
+
   <!-- CTA BOX -->
   <div class="cta-box">
     <h3>This Is a 90-Day Pilot. The Intelligence Layer Is Live.</h3>
     <p>Water Signal Tracker™ is currently collecting community data across Grenada parishes at no cost to government or utility partners. This report represents Week 1. A funded 90-day pilot would expand coverage to all 6 parishes, produce monthly intelligence reports, and build the evidentiary foundation for infrastructure intervention and resilience investment.</p>
     <div class="cta-links">
-      Report your water status: forms.gle/5eNmwgihWszuUP7NA &nbsp;|&nbsp; Follow updates: whatsapp.com/channel/0029VbDJdL729753vNvdGU1T
+      <a href="https://forms.gle/5eNmwgihWszuUP7NA" target="_blank" class="cta-btn-primary">+ Submit a Report</a>
+      <a href="https://shay08.github.io/water-signal-tracker/" target="_blank" class="cta-btn-secondary">View Live Tracker →</a>
+      <a href="https://whatsapp.com/channel/0029VbDJdL729753vNvdGU1T" target="_blank" class="cta-btn-secondary">💧 Follow on WhatsApp</a>
     </div>
   </div>
 
@@ -620,5 +901,29 @@ body {
   </div>
 
 </div>
+
+<script>
+  // Community Impact Duration™ Counter — Event #1
+  // Anchor: May 28, 2026 at 2:00 PM AST (UTC-4 = 18:00 UTC)
+  const EV1_ANCHOR = new Date('2026-05-28T18:00:00Z');
+
+  function updateEv1Counter() {
+    const now = new Date();
+    const diff = now - EV1_ANCHOR;
+    if (diff < 0) {
+      document.getElementById('ev1-days').textContent = '0';
+      document.getElementById('ev1-hours').textContent = '00';
+      return;
+    }
+    const totalHours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(totalHours / 24);
+    const hours = totalHours % 24;
+    document.getElementById('ev1-days').textContent = days;
+    document.getElementById('ev1-hours').textContent = String(hours).padStart(2, '0');
+  }
+
+  updateEv1Counter();
+  setInterval(updateEv1Counter, 60000);
+</script>
 </body>
 </html>
