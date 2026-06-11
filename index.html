@@ -336,7 +336,49 @@
       70%  { transform: translate(-50%,-50%) scale(2.8); opacity: 0; }
       100% { transform: translate(-50%,-50%) scale(2.8); opacity: 0; }
     }
+/* LIVE INTELLIGENCE TICKER */
 
+.live-ticker-wrap{
+    margin:20px 0 30px;
+    border:1px solid #1a2535;
+    border-radius:12px;
+    overflow:hidden;
+    background:#0b1320;
+}
+
+.live-ticker-label{
+    background:#00c2ff;
+    color:#08111d;
+    font-weight:700;
+    padding:10px 16px;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.live-ticker{
+    overflow:hidden;
+    white-space:nowrap;
+    position:relative;
+    padding:14px 0;
+}
+
+.live-ticker-track{
+    display:inline-block;
+    padding-left:100%;
+    animation:tickerMove 40s linear infinite;
+    color:#dce8f5;
+    font-size:14px;
+}
+
+@keyframes tickerMove{
+    from{
+        transform:translateX(0);
+    }
+    to{
+        transform:translateX(-100%);
+    }
+}
     footer {
       text-align: center;
       padding: 2rem 1rem;
@@ -360,6 +402,36 @@
 </header>
 
 <div class="container">
+     <!-- LIVE INTELLIGENCE TICKER -->
+  <div class="live-ticker-wrap">
+    <div class="live-ticker-label">Live Water Intelligence</div>
+    <div class="live-ticker">
+      <div class="live-ticker-track" id="liveTickerText">
+        Loading live signal summary...
+      </div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE BRIEFING CARDS -->
+  <div class="briefing-grid">
+    <div class="briefing-card">
+      <div class="briefing-label">Current Situation</div>
+      <div class="briefing-title">Community reports are active</div>
+      <p id="briefSituation">Live data is being pulled from the community tracker.</p>
+    </div>
+
+    <div class="briefing-card alert">
+      <div class="briefing-label">Most Significant Signal</div>
+      <div class="briefing-title">Restoration does not equal reliability</div>
+      <p>Recent reports show water may return temporarily, then weaken or disappear again.</p>
+    </div>
+
+    <div class="briefing-card">
+      <div class="briefing-label">Evidence Layer</div>
+      <div class="briefing-title">Community + field + institutional signals</div>
+      <p>Reports are supported by field outreach, NAWASA notices, and public community complaints.</p>
+    </div>
+  </div>
 
   <div class="stats-grid">
     <div class="stat-card">
@@ -588,7 +660,27 @@
     document.getElementById('sNone').textContent   = noWater;
     document.getElementById('sLong').textContent   = longOut;
   }
+  function renderLiveBriefing(reports) {
+    const total = reports.length;
+    const parishes = new Set(reports.map(r => r.parish.toLowerCase())).size;
+    const noWater = reports.filter(r => r.status === 'no_water').length;
+    const longOut = reports.filter(r => {
+      const d = (r.days || '').toLowerCase();
+      return d.includes('7+') || d.includes('over') || d.includes('month');
+    }).length;
 
+    const ticker = document.getElementById('liveTickerText');
+    if (ticker) {
+      ticker.textContent =
+        `LIVE SIGNALS: ${total} reports received • ${noWater} no-water reports • ${longOut} reports over 7 days • ${parishes} parishes represented • Current disruption cycle remains active • Field outreach completed June 9 • NAWASA institutional notices logged • Community Impact Duration™ counting`;
+    }
+
+    const situation = document.getElementById('briefSituation');
+    if (situation) {
+      situation.textContent =
+        `${total} community reports have been submitted across ${parishes} parishes. ${noWater} reports currently indicate no water access.`;
+    }
+  }
   function loadData() {
     document.getElementById('feedStatus').textContent = 'Refreshing...';
     Papa.parse(CSV_URL, {
@@ -613,6 +705,7 @@
         reports.forEach(r=>addMarker(r));
         renderFeed(reports);
         renderStats(reports);
+         renderLiveBriefing(reports);
         document.getElementById('feedStatus').textContent =
           `Live · ${reports.length} report${reports.length!==1?'s':''}`;
       },
