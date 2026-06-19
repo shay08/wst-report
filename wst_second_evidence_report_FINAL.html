@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Signal Tracker™ — Second Evidence Report</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', Helvetica, sans-serif; background: #08111F; color: #F0F4FF; padding: 0; }
+.page { max-width: 960px; margin: 0 auto; padding: 48px 40px; }
+
+/* HEADER */
+.header { border-bottom: 3px solid #FF4B4B; padding-bottom: 32px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-start; }
+.header-left .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 3px; color: #FF4B4B; text-transform: uppercase; margin-bottom: 8px; }
+.header-left h1 { font-size: 2rem; font-weight: 900; color: #F0F4FF; line-height: 1.1; }
+.header-left h1 span { color: #FF4B4B; }
+.header-left .report-sub { font-size: 13px; color: #6B7FA3; margin-top: 8px; line-height: 1.6; max-width: 500px; }
+.header-right { text-align: right; font-size: 12px; color: #6B7FA3; line-height: 1.8; }
+.header-right strong { color: #F0F4FF; display: block; font-size: 13px; }
+
+.confidential { font-size: 10px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; color: #FF4B4B; text-align: center; margin-bottom: 12px; }
+
+/* OUTPUT CLASSIFICATION */
+.output-classification { background: #0D1C2E; border: 1px solid #132338; border-radius: 6px; padding: 12px 16px; font-size: 12px; color: #6B7FA3; margin-bottom: 24px; line-height: 1.6; }
+
+/* METHODOLOGY */
+.methodology { background: #0D1C2E; border: 1px solid #132338; border-radius: 8px; padding: 24px; margin-bottom: 32px; text-align: center; }
+.methodology-text { font-size: 15px; font-weight: 600; color: #F0F4FF; line-height: 1.7; font-style: italic; }
+
+/* ALERT BANNER */
+.alert-banner { background: rgba(255,75,75,0.1); border: 1px solid #FF4B4B; border-left: 4px solid #FF4B4B; border-radius: 8px; padding: 20px 24px; margin-bottom: 32px; }
+.alert-banner .alert-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #FF4B4B; text-transform: uppercase; margin-bottom: 8px; }
+.alert-banner p { font-size: 14px; color: #F0F4FF; line-height: 1.7; }
+.alert-banner strong { color: #FF4B4B; }
+
+/* INTRO */
+.intro { background: #0D1C2E; border-left: 4px solid #F5A623; border-radius: 8px; padding: 24px 28px; margin-bottom: 40px; font-size: 15px; line-height: 1.7; color: #F0F4FF; }
+.intro strong { color: #F5A623; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+.stat-card { background: #0D1C2E; border: 1px solid #132338; border-radius: 8px; padding: 20px 16px; text-align: center; }
+.stat-card.alert { border-color: rgba(255,75,75,0.4); background: rgba(255,75,75,0.05); }
+.stat-card .label { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #6B7FA3; text-transform: uppercase; margin-bottom: 10px; }
+.stat-card .number { font-size: 2.6rem; font-weight: 900; color: #F5A623; line-height: 1; }
+.stat-card .number.red { color: #FF4B4B; }
+.stat-card .number.teal { color: #00C9B1; }
+.stat-card .sub { font-size: 11px; color: #6B7FA3; margin-top: 6px; line-height: 1.4; }
+
+/* SECTION TITLE */
+.section-title { font-size: 11px; font-weight: 800; letter-spacing: 3px; color: #F5A623; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #F5A623; margin-top: 40px; }
+.section-title.red { color: #FF4B4B; border-bottom-color: #FF4B4B; }
+
+/* KEY FINDINGS */
+.findings { margin-bottom: 40px; }
+.finding-item { background: #0D1C2E; border: 1px solid #132338; border-radius: 8px; padding: 20px 24px; margin-bottom: 12px; display: flex; gap: 20px; align-items: flex-start; }
+.finding-item.critical { border-color: rgba(255,75,75,0.5); background: rgba(255,75,75,0.05); }
+.finding-item.new-finding { border-color: rgba(245,166,35,0.4); }
+.finding-number { font-size: 1.4rem; font-weight: 900; color: #F5A623; min-width: 36px; }
+.finding-number.red { color: #FF4B4B; }
+.finding-content .title { font-size: 14px; font-weight: 700; color: #F0F4FF; margin-bottom: 4px; }
+.finding-content .detail { font-size: 13px; color: #6B7FA3; line-height: 1.6; }
+.finding-content .detail strong { color: #00C9B1; }
+.finding-content .detail strong.red { color: #FF4B4B; }
+.new-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; background: rgba(245,166,35,0.15); color: #F5A623; border: 1px solid #F5A623; margin-bottom: 8px; }
+
+/* DISCONNECTION BOX */
+.disconnect-box { background: rgba(255,75,75,0.08); border: 2px solid #FF4B4B; border-radius: 8px; padding: 24px 28px; margin-bottom: 40px; }
+.disconnect-box .dc-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: #FF4B4B; text-transform: uppercase; margin-bottom: 12px; }
+.disconnect-box .dc-title { font-size: 1.1rem; font-weight: 900; color: #F0F4FF; margin-bottom: 10px; line-height: 1.3; }
+.disconnect-box .dc-body { font-size: 13px; color: #6B7FA3; line-height: 1.7; }
+.disconnect-box .dc-body strong { color: #FF4B4B; }
+
+/* INFRASTRUCTURE / HOUSEHOLD SECTIONS */
+.infra-section { background: #0D1C2E; border: 1px solid #132338; border-left: 4px solid #00C9B1; border-radius: 8px; padding: 28px; margin-bottom: 32px; }
+.infra-section.gold { border-left-color: #F5A623; }
+.infra-title { font-size: 1.1rem; font-weight: 800; color: #F0F4FF; margin-bottom: 4px; }
+.infra-subtitle { font-size: 12px; color: #6B7FA3; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; }
+.infra-body { font-size: 14px; color: #F0F4FF; line-height: 1.75; margin-bottom: 16px; }
+.figure-caption { background: #08111F; border: 1px solid #132338; border-radius: 6px; padding: 14px 16px; font-size: 12px; color: #6B7FA3; font-style: italic; margin-top: 16px; }
+.figure-label { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: #00C9B1; text-transform: uppercase; margin-bottom: 6px; font-style: normal; }
+.photo-placeholder { background: #132338; border: 1px dashed #6B7FA3; border-radius: 6px; padding: 20px; text-align: center; font-size: 12px; color: #6B7FA3; margin: 16px 0; }
+.recommendation { background: #08111F; border: 1px solid #00C9B1; border-radius: 6px; padding: 12px 16px; font-size: 12px; color: #00C9B1; margin-top: 16px; }
+.rec-label { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+
+/* PATTERN SUMMARY */
+.pattern-col { background: #08111F; border-radius: 6px; padding: 16px; }
+.pattern-col-label { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: #F5A623; text-transform: uppercase; margin-bottom: 12px; }
+.pattern-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #132338; font-size: 13px; }
+.pattern-row:last-child { border-bottom: none; }
+.pattern-val { font-weight: 700; color: #F5A623; font-size: 12px; }
+.pattern-val-new { font-weight: 700; color: #00C9B1; font-size: 12px; }
+
+/* TAGS */
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+.tag-alert { background: rgba(255,75,75,0.15); color: #FF4B4B; border: 1px solid #FF4B4B; }
+.tag-new { background: rgba(245,166,35,0.15); color: #F5A623; border: 1px solid #F5A623; }
+.tag-planned { background: rgba(0,201,177,0.12); color: #00C9B1; border: 1px solid #00C9B1; }
+.tag-indirect { background: rgba(245,166,35,0.12); color: #F5A623; }
+
+/* ARCHIVE CALLOUT */
+.archive-callout { background: #0D1C2E; border: 1px solid #132338; border-radius: 8px; padding: 24px 28px; margin-bottom: 40px; }
+.archive-callout h2 { font-size: 1rem; font-weight: 800; color: #F0F4FF; margin-bottom: 8px; }
+.archive-callout p { font-size: 13px; color: #6B7FA3; line-height: 1.6; margin-bottom: 16px; }
+.btn { display: inline-block; background: #0D3A5A; color: #7FD0F5; font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: 6px; text-decoration: none; border: 1px solid #1E5A80; }
+
+/* CTA */
+.cta-box { background: #F5A623; border-radius: 8px; padding: 28px 32px; margin-bottom: 40px; text-align: center; }
+.cta-box h3 { font-size: 1.2rem; font-weight: 900; color: #08111F; margin-bottom: 10px; }
+.cta-box p { font-size: 13px; color: #08111F; margin-bottom: 16px; line-height: 1.6; }
+.cta-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-btn-primary { display: inline-block; background: #08111F; color: #F5A623; font-size: 13px; font-weight: 700; padding: 12px 24px; border-radius: 6px; text-decoration: none; }
+.cta-btn-secondary { display: inline-block; background: transparent; color: #08111F; font-size: 13px; font-weight: 700; padding: 12px 24px; border-radius: 6px; border: 2px solid #08111F; text-decoration: none; }
+
+/* FOOTER */
+.footer { border-top: 2px solid #FF4B4B; padding-top: 24px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.footer .brand { font-size: 13px; font-weight: 700; color: #F5A623; }
+.footer .contact { font-size: 11px; color: #6B7FA3; text-align: right; line-height: 1.8; }
+
+@media (max-width: 600px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .header { flex-direction: column; gap: 16px; }
+  .header-right { text-align: left; }
+  .page { padding: 28px 20px; }
+  .footer { flex-direction: column; }
+  .footer .contact { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="eyebrow">Second Evidence Report · Institutional Pattern Analysis</div>
+      <h1>Water Signal <span>Tracker™</span><br>134 Days of Service Documentation</h1>
+      <div class="report-sub">A chronological record of water system service restoration variances, institutional omissions, missed restoration deadlines, and unresolved community impact across Grenada — February 13 through June 17, 2026. Built from NAWASA's own public communications and community-submitted signal data.</div>
+    </div>
+    <div class="header-right">
+      <strong>Prepared by Sharon L. Simmons</strong>
+      Founder &amp; Chief Innovation Officer<br>
+      SYGNL Technologies™<br>
+      Grenada, West Indies<br>
+      Published June 6, 2026<br>
+      Updated June 17, 2026
+    </div>
+  </div>
+
+  <!-- CONFIDENTIAL -->
+  <div class="confidential">⚠ Confidential — Pilot Intelligence Summary — Methodology Withheld Pending Funded Agreement</div>
+
+  <!-- OUTPUT CLASSIFICATION -->
+  <div class="output-classification">
+    <span style="font-weight:700;color:#F0F4FF;">Output Classification:</span> This document is a Pilot Intelligence Summary. Water Signal Tracker™ outputs are classified as Evidence Reports, Signal Intelligence Briefs, and Operational Pattern Analyses — not report cards, audits, or evaluations.
+  </div>
+
+  <!-- METHODOLOGY STATEMENT -->
+  <div class="methodology">
+    <div class="methodology-text">"Water Signal Tracker™ does not evaluate operational decisions. It documents community-reported service conditions and observed outcomes."</div>
+  </div>
+
+  <!-- ALERT BANNER -->
+  <div class="alert-banner">
+    <div class="alert-label">⚠ Critical Finding</div>
+    <p>This report was built entirely from <strong>NAWASA's own public Facebook posts</strong> — official advisories, valve regulation notices, and system alerts — cross-referenced with timestamped community observations. No data in this report was fabricated or estimated. Every finding is traceable to a public institutional source. <strong>The community would not know this pattern exists without someone connecting the dots across 134 days.</strong> Water Signal Tracker™ connects those dots.</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    This Second Evidence Report documents <strong>35+ NAWASA advisories</strong> issued between <strong>February 13 and June 17, 2026</strong> — now <strong>134 consecutive days</strong> — affecting communities across Grenada. Unlike the First Evidence Report, which documented community-submitted signal data, this report is built entirely from <strong>institutional source material</strong>: official NAWASA notices, valve regulation schedules, broken main alerts, and system recharge announcements. The data reveals a systemic pattern of cascading service restoration variances, missed restoration timelines, inadequate community notification, and a disconnection between declared service availability and actual household water access. One community — <strong>Morne Delice, St. George's</strong> — appears in NAWASA's own notices as early as March 2, 2026, and remains unresolved as of the date of this report.
+  </div>
+
+  <!-- STAT GRID -->
+  <div class="stat-grid">
+    <div class="stat-card alert">
+      <div class="label">Days Documented</div>
+      <div class="number red">134</div>
+      <div class="sub">Feb 13 – Jun 17, 2026 · Active</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">NAWASA Advisories</div>
+      <div class="number">35+</div>
+      <div class="sub">Official public notices logged</div>
+    </div>
+    <div class="stat-card alert">
+      <div class="label">Systems Under Regulation</div>
+      <div class="number red">12</div>
+      <div class="sub">Of 26 island systems · May 13 peak</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Max Production Deficit</div>
+      <div class="number red">69%</div>
+      <div class="sub">Bon Accord system · May 13 disclosure</div>
+    </div>
+  </div>
+
+  <!-- KEY FINDINGS -->
+  <div class="findings">
+    <div class="section-title red" style="margin-top:0;">Institutional Pattern Findings</div>
+
+    <div class="finding-item critical">
+      <div class="finding-number red">F1</div>
+      <div class="finding-content">
+        <div class="title">The Crisis Began in February — Not May</div>
+        <div class="detail">The first documented advisory affecting the Morne Delice area dates to <strong class="red">February 13, 2026</strong> — St. Paul's and surrounding communities. By March 2, NAWASA issued a formal valve regulation schedule specifically naming <strong>La Borie, Mt. Airy, Morne Delice, Mt. Parnassus, The Bocas, Creighton, Holder Hill, and Parade</strong> under the Les Avocats Water System. The crisis that community reports captured in May was not new — it had been building institutionally for at least <strong class="red">95 days before the First Evidence Report was published.</strong></div>
+      </div>
+    </div>
+
+    <div class="finding-item critical">
+      <div class="finding-number red">F2</div>
+      <div class="finding-content">
+        <div class="title">NAWASA Issued Disconnection Notices During Active Supply Disruption</div>
+        <div class="detail">On <strong class="red">May 26, 2026</strong>, while 12 of 26 water systems were under valve regulation and multiple communities had been without water for weeks, NAWASA issued a notice advising that disconnection officers would be operating in listed communities — threatening service disconnection for accounts over 30 days in arrears. <strong>Customers were being notified of potential disconnection for a service they were not receiving.</strong> No exemption or acknowledgment of the ongoing supply disruption was included.</div>
+      </div>
+    </div>
+
+    <div class="finding-item critical">
+      <div class="finding-number red">F3</div>
+      <div class="finding-content">
+        <div class="title">Production Conditions Were Known Since May 13 — Disclosed 23 Days After Communities Were Already Affected</div>
+        <div class="detail">NAWASA's comprehensive dry season advisory on <strong>May 13, 2026</strong> disclosed production deficits of <strong>40% at Les Avocats, 47% at Petit Etang, and 69% at Bon Accord</strong> — facilities that had been operating below capacity since at least early May. Community members in areas served by these systems had already been without consistent water for weeks before this disclosure.</div>
+      </div>
+    </div>
+
+    <div class="finding-item critical">
+      <div class="finding-number red">F4</div>
+      <div class="finding-content">
+        <div class="title">Advisory Restoration Timelines Were Routinely Revised Without Follow-Up</div>
+        <div class="detail">Across the 134-day record, multiple advisories included specific restoration estimates that required revision: <strong>May 27 advisory estimated restoration by 2:00 PM May 28</strong> for the Corinth/La Sagesse corridor; <strong>May 29 advisory estimated restoration by 4:00 PM May 30</strong> for Cuma/Hope/Mt. Fann; <strong>June 4 advisory estimated restoration by 11:00 AM June 5</strong> for Morne Delice system — confirmed unrestored as of June 6 at 12:17 AM. In most instances, no follow-up advisory was issued when an original timeline required revision.</div>
+      </div>
+    </div>
+
+    <div class="finding-item critical">
+      <div class="finding-number red">F5</div>
+      <div class="finding-content">
+        <div class="title">Communities Were Omitted From Advisories Despite Active Disruption</div>
+        <div class="detail">Multiple instances documented where communities experienced disruption without appearing in official notices: <strong>Morne Delice on April 4</strong> — resident confirmed Day 6 without water, community not on NAWASA's published list that day; <strong>Grenville on June 5</strong> — public comment confirmed water gone since before midday, Grenville not included in the June 4 advisory; <strong>Hope Vale</strong> — community member commented on March 19 Morne Delice valve regulation post: <em>"But Hope Vale hasn't had water at..."</em> — confirming disruption outside the official schedule window. <strong>The advisories systematically undercount the affected population.</strong></div>
+      </div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-number">F6</div>
+      <div class="finding-content">
+        <div class="title">The Brandon Hall Dam Tampering Incident — A National Water Security Event With No Definitive Restoration Timeline</div>
+        <div class="detail">On <strong>May 14, 2026</strong>, the Brandon Hall Dam was deliberately tampered with, resulting in complete water loss from the facility. NAWASA stated: <strong>"the Authority is unable to provide a definitive timeframe for restoration."</strong> This event affected La Digue, Holy Innocence, Union, Battle Hill, Caruth, The Villa, Harford Village, and Cook Hill, and placed additional cascading pressure on an already stressed network.</div>
+      </div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-number">F7</div>
+      <div class="finding-content">
+        <div class="title">St. George's University Deployed Its Own Water Tanker — Confirming Supplementary Response Was Required</div>
+        <div class="detail">In the May 13 comprehensive advisory, NAWASA disclosed that <strong>St. George's University had officially deployed its water tanker and operator</strong> to assist with water deliveries in the southern network — indicating that supplementary response capacity was required to support service delivery during this period.</div>
+      </div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-number">F8</div>
+      <div class="finding-content">
+        <div class="title">Advisories Were Issued in Silos — No Single Notice Connected the Full Island Picture</div>
+        <div class="detail">Every advisory in this 134-day record addresses a single system, a single community cluster, or a single incident. <strong>Not one advisory connects the cumulative impact across all 26 systems.</strong> A resident reading any individual notice would have no way of knowing that 12 systems were simultaneously under regulation or that the same communities were being affected by overlapping service variances. Water Signal Tracker™ is the only platform that connects this data across systems, parishes, and time.</div>
+      </div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-number">F9</div>
+      <div class="finding-content">
+        <div class="title">"Effective Immediately and Until Further Notice" — Open-Ended Regulation Language</div>
+        <div class="detail">Multiple valve regulation schedules in this record were issued with the phrase <strong>"effective immediately and until further notice"</strong> — including the March 19 Morne Delice Valve Regulation Schedule and the May 26 Munich Water System notice. This language provides no restoration commitment, no review date, and no planning horizon for affected communities.</div>
+      </div>
+    </div>
+
+    <!-- F10 NEW -->
+    <div class="finding-item new-finding">
+      <div class="finding-number">F10</div>
+      <div class="finding-content">
+        <div class="new-badge">⚠ New Finding · June 2026</div>
+        <div class="title">Restoration Timeline Revision Events and Community Service Outcomes</div>
+        <div class="detail">On <strong>June 15, 2026</strong>, NAWASA issued an advisory for the Petite Bacaye / Red Gate / La Calome / Old Westerhall / Westerhall Heights corridor in St. David, with a restoration estimate of <strong>8:00 PM that evening</strong>. On June 16, a follow-up notice revised the restoration timeline to <strong>12:00 noon</strong>. Community-reported service conditions indicate water was restored to the corridor approximately <strong>27 hours after the original estimate</strong>. Initial restoration was followed by community reports of reduced pressure.<br><br>
+        This sequence documents a distinction between announced restoration timelines and observed household service conditions — the core measurement gap Water Signal Tracker™ was designed to make visible.<br><br>
+        Notably, this event marks the <strong>first instance in the 134-day record</strong> where NAWASA issued a follow-up communication when an original restoration estimate required revision. This represents an observable change in communication behavior worth tracking going forward.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DISCONNECTION CALLOUT -->
+  <div class="disconnect-box">
+    <div class="dc-label">⚠ Accountability Finding — Disconnection Notice During Active Supply Disruption</div>
+    <div class="dc-title">NAWASA Issued Disconnection Notices While Communities Had No Water to Use</div>
+    <div class="dc-body">On May 26, 2026 — while <strong>12 of 26 water systems were under valve regulation</strong> and multiple communities had been experiencing zero water access for weeks — NAWASA issued a disconnection notice advising that accounts over 30 days in arrears were liable for disconnection, with reconnection not guaranteed within 72 hours.<br><br>No cross-reference to the ongoing supply disruption appeared in the disconnection notice. No exemption was offered. No acknowledgment that billing periods overlapped with documented service restoration variances.<br><br>This is not a billing department error in isolation. It is evidence of <strong>institutional silos operating without coordination</strong> — the same structural pattern that produced fragmented advisories, open-ended timelines, and omitted communities throughout this 134-day record.</div>
+  </div>
+
+  <!-- INFRASTRUCTURE INVESTMENT CONTEXT -->
+  <div class="section-title">Infrastructure Investment Context</div>
+
+  <div class="infra-section">
+    <div class="infra-title">Infrastructure Investment Context</div>
+    <div class="infra-subtitle">Carenage Waterfront · St. George's · June 2026</div>
+    <div class="infra-body">Water Signal Tracker™ observations during June 2026 occurred alongside visible infrastructure improvement activities across Grenada.</div>
+    <div class="infra-body">Photographs taken along the Carenage waterfront in St. George's document the staging of large-diameter pipe consistent with water infrastructure works, replacement activities, expansion efforts, or network upgrade projects. These materials are indicative of ongoing investment in water infrastructure and demonstrate that community-reported service disruptions are occurring within a broader period of utility modernization and system improvement.</div>
+    <div class="infra-body">Water Signal Tracker™ does not evaluate construction schedules, project execution, operational decisions, or infrastructure performance. Rather, the platform documents community-reported service conditions and observed outcomes while providing contextual visibility into publicly observable infrastructure developments.</div>
+    <div class="infra-body">The inclusion of these images is intended to provide operational context and to acknowledge that service interruptions may occur during periods of maintenance, repair, replacement, or network expansion activities.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;">
+      <img src="IMG_3827.jpeg" alt="Large-diameter pipe staged at Carenage waterfront, St. George's, June 2026" style="width:100%;border-radius:6px;object-fit:cover;aspect-ratio:4/3;">
+      <img src="IMG_3828.jpeg" alt="Infrastructure pipe along Carenage waterfront, Grenada, June 2026" style="width:100%;border-radius:6px;object-fit:cover;aspect-ratio:4/3;">
+      <img src="IMG_3829.jpeg" alt="Water infrastructure pipe staged along the Carenage, St. George's, June 2026" style="width:100%;border-radius:6px;object-fit:cover;aspect-ratio:4/3;">
+    </div>
+    <div class="figure-caption">
+      <div class="figure-label">Figure — Infrastructure Investment Context · Carenage Waterfront, St. George's · June 2026</div>
+      Large-diameter pipe staged along the Carenage waterfront, consistent with water infrastructure works, replacement activities, or network upgrade projects. Water Signal Tracker™ community reports documenting service disruptions during this period exist within a broader context of visible infrastructure investment. WST does not evaluate construction timelines or operational decisions — it documents community-reported service conditions and observed outcomes alongside publicly visible infrastructure developments.
+    </div>
+    <div class="recommendation">
+      <div class="rec-label">Recommendation</div>
+      Retain this section in future Water Signal Tracker™ Evidence Reports. It reinforces the platform's role as a community visibility and intelligence tool rather than an evaluative or adversarial mechanism.
+    </div>
+  </div>
+
+  <!-- HOUSEHOLD IMPACT OBSERVATION -->
+  <div class="section-title">Illustrative Household Impact Observation</div>
+
+  <div class="infra-section gold">
+    <div class="infra-title">Household Impact Observation</div>
+    <div class="infra-subtitle">Morne Delice · St. George's · June 2026</div>
+    <div class="infra-body">The following observation documents a household-level operational impact recorded during a period of reduced water pressure and intermittent supply in the Morne Delice area, St. George's.</div>
+    <div class="infra-body">Photograph documents laundry manually wrung and draped over a balcony railing — a household adaptation indicating that water pressure was insufficient to complete a standard washing machine cycle. The image illustrates the type of behavioral and operational adjustment residents make during periods of reduced or intermittent supply that do not appear in official service records.</div>
+    <div style="margin:16px 0;">
+      <img src="wst_household_impact_june2026.png" alt="Laundry manually wrung and hung to dry during reduced water pressure, Morne Delice, June 2026" style="width:100%;max-width:480px;border-radius:6px;display:block;margin:0 auto;">
+    </div>
+    <div class="figure-caption">
+      <div class="figure-label">Figure — Illustrative Household Impact Observation · Morne Delice, St. George's · June 2026</div>
+      Laundry manually wrung and hung to dry during a period of reduced water pressure. Standard washing machine cycle was not completable under available pressure conditions. This image illustrates the category of household-level consequence that community-submitted reports describe but utility operational records do not capture. Water Signal Tracker™ is designed to make this layer of impact visible alongside official advisory and infrastructure data.
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #132338;">
+      <div class="pattern-col-label">Signal Chain — Complete Observation</div>
+      <div class="tag-row">
+        <span class="tag tag-new">Community Report Submitted</span>
+        <span class="tag tag-indirect">Official Advisories Documented</span>
+        <span class="tag tag-planned">Infrastructure Activity Observed</span>
+        <span class="tag tag-alert">Household Adaptation Observed</span>
+      </div>
+      <div style="font-size:12px;color:#6B7FA3;margin-top:12px;font-style:italic;">Note: This is an illustrative example from a single household during the June 2026 reporting period. A funded 90-day pilot would expand household impact documentation across multiple communities and parishes to establish pattern-level findings.</div>
+    </div>
+  </div>
+
+  <!-- UPDATED PATTERN SUMMARY -->
+  <div class="section-title">Updated Pattern Summary</div>
+
+  <div style="background:#0D1C2E;border:1px solid #132338;border-radius:8px;padding:24px;margin-bottom:40px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="pattern-col">
+        <div class="pattern-col-label">Advisory Types — 134 Days</div>
+        <div class="pattern-row"><span>Valve Regulation Schedules</span><span class="pattern-val">12+</span></div>
+        <div class="pattern-row"><span>Broken Main Incidents</span><span class="pattern-val">9+</span></div>
+        <div class="pattern-row"><span>System Recharges</span><span class="pattern-val">6+</span></div>
+        <div class="pattern-row"><span>Production / Capacity Alerts</span><span class="pattern-val">3</span></div>
+        <div class="pattern-row"><span>Security Incidents</span><span class="pattern-val">1</span></div>
+        <div class="pattern-row"><span>Disconnection Notices</span><span class="pattern-val">1</span></div>
+        <div class="pattern-row"><span>High Turbidity Events</span><span class="pattern-val-new">1 new</span></div>
+        <div class="pattern-row"><span>Restoration Timeline Revisions</span><span class="pattern-val-new">1 new</span></div>
+      </div>
+      <div class="pattern-col">
+        <div class="pattern-col-label">Accountability Gaps</div>
+        <div class="pattern-row"><span>Restoration Timelines — No Follow-Up</span><span class="pattern-val">4+ confirmed</span></div>
+        <div class="pattern-row"><span>Communities Omitted From Notices</span><span class="pattern-val">3+ instances</span></div>
+        <div class="pattern-row"><span>Open-Ended "Until Further Notice"</span><span class="pattern-val">5+ schedules</span></div>
+        <div class="pattern-row"><span>Restoration Timeline Unavailable</span><span class="pattern-val-new">2 new · Jun 16</span></div>
+        <div class="pattern-row"><span>Disconnection During Active Disruption</span><span class="pattern-val">1 confirmed</span></div>
+        <div class="pattern-row"><span>No Cumulative Advisory Issued</span><span class="pattern-val">134 days</span></div>
+        <div class="pattern-row"><span>Timeline Revision — Follow-Up Issued</span><span class="pattern-val-new">1 · Jun 16 ✓</span></div>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding-top:20px;border-top:1px solid #132338;">
+      <div class="pattern-col-label">Operational Event Categories Observed — June 2026</div>
+      <div class="tag-row">
+        <span class="tag tag-alert">Broken Water Main</span>
+        <span class="tag tag-indirect">High Turbidity</span>
+        <span class="tag tag-planned">Planned Network Maintenance</span>
+        <span class="tag tag-planned">Bulk Meter Replacement</span>
+        <span class="tag tag-new">Restoration Timeline Revision</span>
+      </div>
+      <div style="font-size:13px;color:#6B7FA3;margin-top:12px;">Total operational categories observed in June 2026: <strong style="color:#F5A623;">5</strong></div>
+    </div>
+  </div>
+
+  <!-- ARCHIVE CALLOUT -->
+  <div class="archive-callout">
+    <h2>Full 134-Day Advisory Archive</h2>
+    <p>The complete chronological advisory log has been separated into a dedicated archive page to keep this report focused on findings, patterns, and decision-useful intelligence.</p>
+    <a href="wst_advisory_archive.html" class="btn">View Full 134-Day Advisory Archive →</a>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>The Pattern Is Documented. The Intelligence Gap Is Proven.</h3>
+    <p>Water Signal Tracker™ is the only platform in Grenada combining community-reported service conditions, official utility advisories, and observable infrastructure context into a single intelligence layer. A funded 90-day pilot would expand coverage across all 6 parishes, produce monthly cross-system intelligence reports, and build the evidentiary foundation for infrastructure intervention, policy accountability, and resilience investment across the Caribbean.</p>
+    <p style="font-size:11px;color:rgba(8,17,31,0.55);margin-top:-8px;margin-bottom:16px;">This pilot intelligence summary demonstrates proof of concept. The full methodology, scoring system, analytics engine, monthly reporting framework, and predictive capabilities are withheld pending a funded agreement.</p>
+    <div class="cta-links">
+      <a href="https://forms.gle/5eNmwgihWszuUP7NA" target="_blank" class="cta-btn-primary">+ Submit a Report</a>
+      <a href="https://shay08.github.io/water-signal-tracker/" target="_blank" class="cta-btn-secondary">View Live Tracker →</a>
+      <a href="water_signal_tracker_evidence_report.html" class="cta-btn-secondary">Read First Evidence Report →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="brand">Water Signal Tracker™ · SYGNL Technologies™ · Second Evidence Report</div>
+    <div class="contact">
+      Sharon L. Simmons · Founder &amp; Chief Innovation Officer<br>
+      sharon@sygnltech.com · +1 (473) 414-6509 · sygnltech.com<br>
+      <em>U.S. Provisional Patent Application No. 64/085,836 · Filed June 9, 2026</em>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const INST_ANCHOR = new Date('2026-03-02T00:00:00Z');
+  function updateCounter() {
+    const now = new Date();
+    const diff = now - INST_ANCHOR;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const el = document.getElementById('inst-days');
+    if (el) el.textContent = days;
+  }
+  updateCounter();
+  setInterval(updateCounter, 60000);
+</script>
+</body>
+</html>
