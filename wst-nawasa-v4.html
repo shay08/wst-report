@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Signal Tracker™ — Community Intelligence Summary · NAWASA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#08111F;
+  --card:#0D1C2E;
+  --border:#132338;
+  --gold:#F5A623;
+  --teal:#00C9B1;
+  --red:#FF4B4B;
+  --text:#F0F4FF;
+  --muted:#6B7FA3;
+  --amber:#F5A623;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:34px;height:34px;background:var(--card);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;letter-spacing:0;color:var(--gold);flex-shrink:0}
+.brand-name{font-weight:800;font-size:15px;color:var(--text);letter-spacing:-0.2px}
+.brand-sub{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0.5px;text-transform:uppercase}
+.topbar-center{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.mode-label{font-size:11px;color:var(--muted);font-weight:500}
+.mode-select{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;outline:none}
+.mode-select:focus{border-color:var(--gold)}
+.lane-badge{background:var(--teal);color:var(--navy);font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;letter-spacing:0.5px;text-transform:uppercase}
+
+/* ── NAV TABS ── */
+.nav-tabs{display:flex;gap:2px;padding:10px 24px 0;border-bottom:1px solid var(--border);background:var(--navy);position:sticky;top:56px;z-index:99;overflow-x:auto}
+.nav-tab{padding:8px 16px;font-size:12px;font-weight:600;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;font-family:inherit}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.nav-tab .tab-badge{background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:5px}
+
+/* ── LAYOUT ── */
+.main{padding:24px;max-width:1400px;margin:0 auto}
+.section{display:none}
+.section.active{display:block}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card.gold::before{background:var(--gold)}
+.stat-card.teal::before{background:var(--teal)}
+.stat-card.red::before{background:var(--red)}
+.stat-card.muted::before{background:var(--border)}
+.stat-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
+.stat-value{font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1}
+.stat-card.teal .stat-value{color:var(--teal)}
+.stat-card.red .stat-value{color:var(--red)}
+.stat-card.white .stat-value{color:var(--text)}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ── SECTION HEADER ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--gold)}
+.section-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--gold)}
+.section-meta{font-size:11px;color:var(--muted)}
+
+/* ── CARDS ROW ── */
+.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:24px}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
+.info-card h3{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.info-card p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── ALERT BANNER ── */
+.alert-banner{background:#1a0a0a;border:1px solid var(--red);border-left:4px solid var(--red);border-radius:6px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.alert-icon{color:var(--red);font-size:16px;flex-shrink:0;margin-top:1px}
+.alert-title{font-size:12px;font-weight:700;color:var(--red);margin-bottom:2px}
+.alert-body{font-size:12px;color:#e8b4b4}
+
+.info-banner{background:#0a1a14;border:1px solid var(--teal);border-left:4px solid var(--teal);border-radius:6px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.info-icon{color:var(--teal);font-size:16px;flex-shrink:0;margin-top:1px}
+.info-title{font-size:12px;font-weight:700;color:var(--teal);margin-bottom:2px}
+.info-body{font-size:12px;color:#a8e8dc}
+
+/* ── TABLE ── */
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{text-align:left;padding:8px 12px;background:#0a1422;color:var(--muted);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.6px;border-bottom:1px solid var(--border)}
+.data-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text)}
+.data-table tr:hover td{background:rgba(245,166,35,0.04)}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:auto;margin-bottom:16px}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px}
+.badge-red{background:rgba(255,75,75,0.15);color:var(--red);border:1px solid rgba(255,75,75,0.3)}
+.badge-gold{background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.3)}
+.badge-teal{background:rgba(0,201,177,0.15);color:var(--teal);border:1px solid rgba(0,201,177,0.3)}
+.badge-gray{background:rgba(107,127,163,0.15);color:var(--muted);border:1px solid rgba(107,127,163,0.3)}
+.badge-orange{background:rgba(255,140,0,0.15);color:#ff8c00;border:1px solid rgba(255,140,0,0.3)}
+
+/* ── PARISH GRID ── */
+.parish-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:16px}
+.parish-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
+.parish-name{font-size:14px;font-weight:800;color:var(--text);margin-bottom:2px}
+.parish-meta{font-size:11px;color:var(--muted);margin-bottom:12px}
+.score-row{display:flex;justify-content:space-between;margin-bottom:6px;align-items:center}
+.score-label{font-size:11px;color:var(--muted)}
+.score-bar-wrap{flex:1;margin:0 10px;background:var(--border);border-radius:3px;height:5px}
+.score-bar{height:5px;border-radius:3px}
+.score-bar.gold{background:var(--gold)}
+.score-bar.teal{background:var(--teal)}
+.score-bar.red{background:var(--red)}
+.score-num{font-size:12px;font-weight:700;color:var(--text);min-width:30px;text-align:right}
+.parish-footer{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.priority-high{border-top:3px solid var(--red)}
+.priority-med{border-top:3px solid var(--gold)}
+.priority-low{border-top:3px solid var(--teal)}
+
+/* ── SIGNAL THREAD ── */
+.thread-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px;position:relative}
+.thread-spine{position:absolute;left:33px;top:60px;bottom:20px;width:2px;background:var(--border);z-index:0}
+.thread-spine-break{position:absolute;left:33px;width:2px;background:var(--red);z-index:1;box-shadow:0 0 8px rgba(255,75,75,0.5)}
+.thread-stage{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);position:relative;z-index:2}
+.thread-id{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:14px}
+.thread-stage{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);position:relative}
+.thread-stage:last-child{border-bottom:none}
+.thread-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.thread-dot.complete{background:var(--teal)}
+.thread-dot.active{background:var(--gold);box-shadow:0 0 0 3px rgba(245,166,35,0.2)}
+.thread-dot.pending{background:var(--border)}
+.thread-dot.flag{background:var(--red)}
+.thread-content{}
+.thread-stage-name{font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
+.thread-stage-detail{font-size:12px;color:var(--muted)}
+.thread-stage-date{font-size:10px;color:var(--muted);margin-top:2px}
+.thread-line{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+.thread-select{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;outline:none;flex:1}
+.thread-select:focus{border-color:var(--gold)}
+.btn{padding:7px 16px;border-radius:6px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:opacity .15s}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-outline:hover{border-color:var(--gold);color:var(--text)}
+.btn:hover{opacity:.85}
+
+/* ── PATTERN ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:16px}
+.pattern-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px}
+.pattern-number{font-size:2rem;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px}
+.pattern-card.red-card .pattern-number{color:var(--red)}
+.pattern-card.teal-card .pattern-number{color:var(--teal)}
+.pattern-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}
+.pattern-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.finding-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:10px}
+.finding-num{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.finding-num span{background:var(--gold);color:var(--navy);width:20px;height:20px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900}
+.finding-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+.finding-body{font-size:12px;color:var(--muted);line-height:1.6}
+.finding-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+
+/* ── OUTPUT AREA ── */
+.output-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.output-tab{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;transition:all .15s}
+.output-tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.output-tab:hover:not(.active){border-color:var(--gold);color:var(--text)}
+.output-panel{display:none}
+.output-panel.active{display:block}
+.report-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px}
+.report-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.report-title{font-size:14px;font-weight:800;color:var(--text)}
+.report-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.report-body{font-size:13px;color:var(--text);line-height:1.7}
+.report-body strong{color:var(--gold);font-weight:700}
+.report-body .highlight{color:var(--teal)}
+.report-body .warning{color:var(--red)}
+.report-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.report-section-title{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px}
+.report-stat-row{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0}
+.report-stat{text-align:center;min-width:80px}
+.report-stat-num{font-size:1.6rem;font-weight:900;color:var(--gold);line-height:1}
+.report-stat-label{font-size:10px;color:var(--muted);margin-top:2px}
+.copy-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:10px;padding:8px;background:rgba(245,166,35,0.05);border-radius:4px;border-left:3px solid var(--gold)}
+
+/* ── REVIEW QUEUE ── */
+.queue-controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.search-input{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 12px;font-family:inherit;font-size:12px;outline:none;flex:1;min-width:200px}
+.search-input:focus{border-color:var(--gold)}
+.filter-select{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:7px 10px;font-family:inherit;font-size:12px;cursor:pointer;outline:none}
+
+/* ── FOOTER ── */
+.dash-footer{margin-top:32px;padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
+.footer-brand{font-size:11px;color:var(--muted)}
+.footer-brand strong{color:var(--gold)}
+.footer-meta{font-size:10px;color:var(--muted)}
+
+/* ── MODE VIEWS ── */
+.mode-nawasa .show-internal{display:none}
+.mode-dev .show-internal{display:none}
+.mode-nawasa .show-sharon{display:none}
+.mode-dev .show-sharon{display:none}
+.mode-nawasa .show-dev-only{display:none}
+.mode-sharon .show-nawasa{display:none}
+.mode-sharon .show-dev-only{display:none}
+.mode-dev .show-nawasa{display:none}
+
+/* ── STAKEHOLDER HEADER ── */
+.stakeholder-bar{display:none;padding:10px 24px;background:rgba(0,201,177,0.08);border-bottom:1px solid rgba(0,201,177,0.2);font-size:12px;color:var(--teal);font-weight:600}
+.mode-nawasa .stakeholder-bar.nawasa-bar{display:block}
+.mode-dev .stakeholder-bar.dev-bar{display:block}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+.stats-grid{grid-template-columns:1fr 1fr}
+.topbar-center{display:none}
+.main{padding:14px}
+.nav-tabs{padding:8px 14px 0}
+}
+
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes drip{0%{transform:translateY(0);opacity:1;r:3}70%{opacity:1}100%{transform:translateY(40px);opacity:0}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">WST</div>
+    <div>
+      <div class="brand-name">Water Signal Tracker™</div>
+      <div class="brand-sub">SYGNL Technologies™ · Community Intelligence</div>
+    </div>
+  </div>
+  <div class="topbar-center">Civic Intelligence Dashboard</div>
+  <div class="topbar-right">
+    <div class="lane-badge">WST</div>
+    <div style="background:rgba(0,201,177,0.15);border:1px solid rgba(0,201,177,0.4);color:var(--teal);font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;letter-spacing:0.5px">NAWASA / Government View</div>
+  </div>
+</div>
+
+<!-- STAKEHOLDER BARS -->
+<div style="padding:10px 24px;background:rgba(0,201,177,0.08);border-bottom:1px solid rgba(0,201,177,0.2);font-size:12px;color:var(--teal);font-weight:600">NAWASA / Government View — Community-level water signal intelligence across all 6 Grenada parishes · Prepared by SYGNL Technologies™</div>
+
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showSection('command')">Command Center</button>
+  <button class="nav-tab" onclick="showSection('parish')">Parish Intelligence</button>
+
+  <button class="nav-tab" onclick="showSection('thread')">Signal Thread</button>
+  <button class="nav-tab" onclick="showSection('patterns')">Pattern Detection</button>
+  <button class="nav-tab" onclick="showSection('output')">Report Outputs</button>
+</div>
+
+<div class="main" id="mainContent">
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 1 — COMMAND CENTER
+═══════════════════════════════════════════════════════ -->
+<div class="section active" id="sec-command">
+
+  <!-- ANIMATED HERO PANEL -->
+  <div id="heroPanel" style="margin-bottom:20px;opacity:0;transition:opacity 1.4s ease;position:relative;overflow:hidden;border-radius:10px;background:var(--card);border:1px solid var(--border)">
+
+    <!-- RIPPLE BG CANVAS -->
+    <canvas id="rippleCanvas" width="1200" height="600" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.22;pointer-events:none;z-index:0"></canvas>
+
+    <!-- HEADLINE -->
+    <div style="text-align:center;padding:20px 16px 16px;position:relative;z-index:2">
+      <div style="font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px">Water Signal Tracker™ · Field Intelligence · Grenada 2026</div>
+      <div id="heroText" style="font-size:clamp(16px,2.8vw,26px);font-weight:900;color:var(--text);line-height:1.3;max-width:700px;margin:0 auto">
+        <span style="color:var(--gold)">131 days.</span> 72 community reports. 6 parishes.<br>
+        <span style="color:var(--red)">Zero cumulative advisories.</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">Communities are reporting. NAWASA is communicating. But <strong style="color:var(--gold)">the gap remains.</strong></div>
+    </div>
+
+    <!-- THREE VISUAL PANELS -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:4px;position:relative;z-index:2">
+
+      <!-- PANEL 1: DRIPPING BUCKET -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;position:relative;overflow:hidden">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Daily Reality — Morne Delice</div>
+        <canvas id="bucketCanvas" width="220" height="170" style="display:block;margin:0 auto"></canvas>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5">"Not enough to bathe, wash dishes<br>or wash clothes." — Morne Delice resident, Apr 24</div>
+        <div style="margin-top:6px"><span style="background:rgba(255,75,75,0.15);color:var(--red);font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;border:1px solid rgba(255,75,75,0.3)">131+ days accumulating</span></div>
+      </div>
+
+      <!-- PANEL 2: COMMUNITY TANK FILL LEVEL -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">System Capacity — May 13 Peak Crisis</div>
+        <canvas id="tankCanvas" width="200" height="160" style="display:block;margin:0 auto"></canvas>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5">Bon Accord: <strong style="color:var(--red)">−69% production</strong><br>Mirabeau: <strong style="color:var(--red)">4 of 27 feet</strong> — 15% capacity</div>
+        <div style="margin-top:6px"><span style="background:rgba(245,166,35,0.15);color:var(--gold);font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;border:1px solid rgba(245,166,35,0.3)">12 of 26 systems under regulation</span></div>
+      </div>
+
+      <!-- PANEL 3: SIGNAL THREAD BREAK -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Where the Gap Occurs</div>
+        <canvas id="threadCanvas" width="260" height="170" style="display:block;margin:0 auto"></canvas>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5">Communities experience outages.<br>The system does not escalate.</div>
+        <div style="margin-top:6px"><span style="background:rgba(255,75,75,0.15);color:var(--red);font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;border:1px solid rgba(255,75,75,0.3)">Stage 4 — Restoration variance confirmed</span></div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER TICKER -->
+    <div style="background:rgba(6,14,26,0.85);border:1px solid var(--border);border-radius:6px;padding:10px 0;overflow:hidden;margin-top:4px;position:relative;z-index:2">
+      <div id="tickerInner" style="display:inline-block;white-space:nowrap;animation:ticker 22s linear infinite;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;padding-left:100%">
+        INTELLIGENCE THAT DRIVES ACTION &nbsp;·&nbsp; EVIDENCE THAT DEMANDS CHANGE &nbsp;·&nbsp; COMMUNITIES THAT DESERVE BETTER &nbsp;·&nbsp; 72 REPORTS · 6 PARISHES · 131 DAYS · COMMUNITY VISIBILITY INTELLIGENCE &nbsp;·&nbsp; WATER SIGNAL TRACKER™ · SYGNL TECHNOLOGIES™ · GRENADA 2026 &nbsp;·&nbsp; INTELLIGENCE THAT DRIVES ACTION &nbsp;·&nbsp; EVIDENCE THAT DEMANDS CHANGE &nbsp;·&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card gold">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Community Reports</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <path d="M14 3C14 3 7 10.5 7 16a7 7 0 0014 0c0-5.5-7-13-7-13z" fill="#4DB8FF" opacity="0.95"/>
+          <ellipse cx="14" cy="22" rx="4" ry="1.5" fill="#4DB8FF" opacity="0.3"/>
+          <path d="M11 15a3.5 3.5 0 003 2.5" stroke="rgba(255,255,255,0.4)" stroke-width="1" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="72">0</div>
+      <div class="stat-sub">Across all 6 parishes · Active</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--gold);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="100%"></div></div>
+    </div>
+
+    <div class="stat-card white">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Parishes Covered</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <circle cx="10" cy="11" r="3" fill="#F0F4FF" opacity="0.7"/>
+          <circle cx="18" cy="11" r="3" fill="#F0F4FF" opacity="0.7"/>
+          <circle cx="14" cy="19" r="3" fill="#F0F4FF" opacity="0.9"/>
+          <line x1="10" y1="11" x2="18" y2="11" stroke="#F0F4FF" stroke-width="1.2" opacity="0.4"/>
+          <line x1="10" y1="11" x2="14" y2="19" stroke="#F0F4FF" stroke-width="1.2" opacity="0.4"/>
+          <line x1="18" y1="11" x2="14" y2="19" stroke="#F0F4FF" stroke-width="1.2" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="6" style="color:var(--text)">0</div>
+      <div class="stat-sub">All Grenada parishes documented</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--text);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="100%"></div></div>
+    </div>
+
+    <div class="stat-card teal">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Validated Reports</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <rect x="6" y="4" width="16" height="20" rx="2" stroke="#00C9B1" stroke-width="1.5" fill="none"/>
+          <path d="M10 14l2.5 2.5L18 11" stroke="#00C9B1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="10" y1="9" x2="18" y2="9" stroke="#00C9B1" stroke-width="1.2" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="54">0</div>
+      <div class="stat-sub">75% validation rate</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--teal);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="75%"></div></div>
+    </div>
+
+    <div class="stat-card red">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Days Monitored</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <rect x="5" y="7" width="18" height="17" rx="2" stroke="#FF4B4B" stroke-width="1.5" fill="none"/>
+          <line x1="5" y1="12" x2="23" y2="12" stroke="#FF4B4B" stroke-width="1.2"/>
+          <line x1="10" y1="5" x2="10" y2="9" stroke="#FF4B4B" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="5" x2="18" y2="9" stroke="#FF4B4B" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="9" y="15" width="4" height="4" rx="0.5" fill="#FF4B4B" opacity="0.8"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="131" style="color:var(--red)">0</div>
+      <div class="stat-sub">Continuous monitoring · Active</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--red);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="100%"></div></div>
+    </div>
+
+    <div class="stat-card red">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Cumulative Advisories</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <path d="M14 5L4 22h20L14 5z" stroke="#FF4B4B" stroke-width="1.5" fill="rgba(255,75,75,0.1)" stroke-linejoin="round"/>
+          <line x1="14" y1="12" x2="14" y2="17" stroke="#FF4B4B" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="14" cy="19.5" r="1" fill="#FF4B4B"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="0" style="color:var(--red)">0</div>
+      <div class="stat-sub">Zero cumulative advisories issued</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--red);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="2%"></div></div>
+      <div style="margin-top:10px;padding:8px 10px;background:rgba(255,75,75,0.06);border:1px solid rgba(255,75,75,0.2);border-radius:6px">
+        <div style="font-size:9px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px">What this means</div>
+        <div style="font-size:10px;color:#e8b4b4;line-height:1.5">NAWASA issued 35+ individual advisories over 134 days — each addressing one system at a time. Zero advisories connected the full island picture across all 26 systems simultaneously. WST is the only platform that connected this data.</div>
+      </div>
+    </div>
+
+    <div class="stat-card gold">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Signal Integrity Score™</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <circle cx="14" cy="14" r="9" stroke="#F5A623" stroke-width="1.5" fill="none"/>
+          <path d="M9 14l3 3 7-7" stroke="#F5A623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="61">0</div>
+      <div class="stat-sub">/ 100 · System under pressure</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--gold);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="61%"></div></div>
+    </div>
+
+    <div class="stat-card teal">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Comm. Reliability Score™</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <path d="M5 8h18v10a2 2 0 01-2 2H7a2 2 0 01-2-2V8z" stroke="#00C9B1" stroke-width="1.5" fill="none"/>
+          <path d="M5 8l9 7 9-7" stroke="#00C9B1" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="34">0</div>
+      <div class="stat-sub">/ 100 · Institutional pattern active</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--teal);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="34%"></div></div>
+    </div>
+
+    <div class="stat-card red">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div class="stat-label">Pattern Alerts</div>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;opacity:0.85">
+          <circle cx="14" cy="14" r="9" stroke="#FF4B4B" stroke-width="1.5" fill="none"/>
+          <line x1="9" y1="9" x2="19" y2="19" stroke="#FF4B4B" stroke-width="2" stroke-linecap="round"/>
+          <line x1="19" y1="9" x2="9" y2="19" stroke="#FF4B4B" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="stat-value countup" data-target="10">0</div>
+      <div class="stat-sub">Active institutional findings</div>
+      <div style="margin-top:8px;height:3px;background:var(--border);border-radius:2px"><div class="count-bar" style="height:3px;background:var(--red);border-radius:2px;width:0%;transition:width 1.8s ease" data-width="100%"></div></div>
+    </div>
+
+  </div>
+
+  <div class="alert-banner">
+    <div class="alert-icon">⚠</div>
+    <div>
+      <div class="alert-title">Critical Pattern Finding — Active</div>
+      <div class="alert-body">Morne Delice Water System: first community signal February 13, 2026 — 131+ days with no cumulative advisory issued. Manual valve control confirmed June 2. Disconnection notices issued May 26 during active 12-system supply disruption. No supply exemption cross-referenced.</div>
+    </div>
+  </div>
+
+  <div class="alert-banner">
+    <div class="alert-icon">⚠</div>
+    <div>
+      <div class="alert-title">Infrastructure Exclusion Finding — Gwanki</div>
+      <div class="alert-body">Gwanki has zero pipe infrastructure. This is not a service restoration variance — it is a Service Exclusion Finding™. Community has never been connected to the distribution network. Classification: Infrastructure Visibility Gap.</div>
+    </div>
+  </div>
+
+  <div class="info-banner">
+    <div class="info-icon">◎</div>
+    <div>
+      <div class="info-title">NAWASA Insight — Anchor Finding</div>
+      <div class="info-body">WST gives NAWASA community-level visibility they do not currently have. 72 reports across 6 parishes document what communities experience — not what utility schedules declare. The gap between those two signals is where institutional pattern risk hides.</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title">Signal Activity — 134 Days Documented</div>
+    <div class="section-meta">Feb 13 – Jun 17, 2026 · Second Evidence Report</div>
+  </div>
+
+  <div class="cards-row">
+    <div class="info-card">
+      <h3>35+ NAWASA Advisories Logged</h3>
+      <p>Official public notices cross-referenced with community-submitted signal data. Fragmented advisory structure documented — no single notice connected the full island picture across 134 days.</p>
+    </div>
+    <div class="info-card">
+      <h3>12 of 26 Systems Under Regulation</h3>
+      <p>Peak disruption reached May 13, 2026. Production deficits: Les Avocats -40%, Petit Etang -47%, Bon Accord -69%. Institutional knowledge existed before public disclosure.</p>
+    </div>
+    <div class="info-card">
+      <h3>4+ Missed Restoration Deadlines</h3>
+      <p>Advisories with specific restoration estimates not met without follow-up communication. Only 1 follow-up notice issued in 134-day record — June 16, 2026 (Westerhall corridor). This is the exception, not the norm.</p>
+    </div>
+    <div class="info-card">
+      <h3>First Evidence: 33 Reports · 3 Parishes</h3>
+      <p>May 15 – June 10, 2026. 64% from St. George's. 14 "No Water" reports. Restoration variance confirmed: promised 11AM June 5 — unrestored 13+ hours past estimated deadline.</p>
+    </div>
+    <div class="info-card">
+      <h3>Second Evidence: Institutional Sources Only</h3>
+      <p>Built entirely from NAWASA's own public Facebook posts — advisories, valve regulation notices, system alerts. Every finding is traceable to a public institutional source.</p>
+    </div>
+    <div class="info-card">
+      <h3>Brandon Hall Dam — Security Event</h3>
+      <p>May 14, 2026: deliberate tampering. Complete water loss. 8 communities affected. NAWASA: "unable to provide a definitive timeframe for restoration." National water security incident with no restoration timeline.</p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title">Advisory Type Breakdown — 134 Days</div>
+    </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Advisory Type</th>
+          <th>Count</th>
+          <th>Signal Category</th>
+          <th>Pattern Flag</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Valve Regulation Schedules</td><td>12+</td><td><span class="badge badge-red">Direct Impact</span></td><td>5+ open-ended "until further notice"</td></tr>
+        <tr><td>Broken Water Main Incidents</td><td>9+</td><td><span class="badge badge-orange">Infrastructure</span></td><td>Same corridor broken twice in 48 hours (May 27–29)</td></tr>
+        <tr><td>System Recharges</td><td>6+</td><td><span class="badge badge-gold">Operational</span></td><td>Cascading network pressure pattern</td></tr>
+        <tr><td>Production / Capacity Alerts</td><td>3</td><td><span class="badge badge-red">Critical</span></td><td>Disclosed 23 days after communities affected</td></tr>
+        <tr><td>Security Incidents</td><td>1</td><td><span class="badge badge-red">Escalation</span></td><td>Brandon Hall Dam tampering — May 14</td></tr>
+        <tr><td>Disconnection Notices</td><td>1</td><td><span class="badge badge-red">Accountability</span></td><td>Issued during active multi-system disruption</td></tr>
+        <tr><td>High Turbidity Events</td><td>1</td><td><span class="badge badge-orange">Quality</span></td><td>Jun 16 · Entire Town of St. George</td></tr>
+        <tr><td>Restoration Timeline Revisions</td><td>1</td><td><span class="badge badge-teal">Positive Signal</span></td><td>First follow-up issued in 134-day record</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+      <div class="info-title">Signal Thread Architecture Active</div>
+      <div class="info-body">Every report in this dashboard carries a signal_thread_id linking community report → validation → scoring → pattern detection → output. Click Signal Thread tab to trace any report end-to-end. This is Lane 4 of the SYGNL Signal Intelligence Engine™ governed by SYGNL OS™ (Patent 63/938,240).</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 2 — PARISH INTELLIGENCE
+═══════════════════════════════════════════════════════ -->
+<div class="section" id="sec-parish">
+
+  <div class="section-header">
+    <div class="section-title">Parish Intelligence — All 6 Grenada Parishes</div>
+    <div class="section-meta">72 community reports · All 6 Grenada parishes · SYGNL Technologies™</div>
+  </div>
+
+  <!-- PIE CHART BLOCK -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:20px">
+    <div style="text-align:center;margin-bottom:4px;font-size:15px;font-weight:800;color:var(--text)">72 Community Reports Across All 6 Parishes</div>
+    <div style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px">Collected through community reporting and field intelligence by Sharon L. Simmons and Denroy Charles.</div>
+    <div style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;justify-content:center">
+      <canvas id="parishPie" width="260" height="260" style="flex-shrink:0"></canvas>
+      <div id="parishLegend" style="display:flex;flex-direction:column;gap:10px;min-width:220px"></div>
+    </div>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);text-align:center;font-style:italic;line-height:1.6">
+      Field intelligence collected across Grenada by SYGNL Technologies™ and local partner Denroy Charles.<br>
+      Dashboard prototype uses this evidence base for decision-support visualization.<br>
+      <span style="color:var(--gold);font-style:normal;font-weight:600">Parish counts shown as current working distribution · Final verification in progress.</span>
+    </div>
+  </div>
+
+  <div class="parish-grid">
+
+    <div class="parish-card priority-high">
+      <div class="parish-name">St. George's</div>
+      <div class="parish-meta">21 of 33 First Evidence reports (64%) · Highest pressure zone</div>
+      <div class="score-row">
+        <span class="score-label">Signal Integrity</span>
+        <div class="score-bar-wrap"><div class="score-bar red" style="width:38%"></div></div>
+        <span class="score-num" style="color:var(--red)">38</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Comm. Reliability</span>
+        <div class="score-bar-wrap"><div class="score-bar red" style="width:22%"></div></div>
+        <span class="score-num" style="color:var(--red)">22</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Avg Outage Duration</span>
+        <div class="score-bar-wrap"><div class="score-bar red" style="width:90%"></div></div>
+        <span class="score-num" style="color:var(--red)">31d+</span>
+      </div>
+      <div class="parish-footer">
+        <span class="badge badge-red">Priority: Critical</span>
+        <span class="badge badge-red">5 Zero-Access Communities</span>
+        <span class="badge badge-gold">Repeat: 9 locations</span>
+      </div>
+    </div>
+
+    <div class="parish-card priority-med">
+      <div class="parish-name">St. David</div>
+      <div class="parish-meta">Westerhall corridor documented · Second Evidence Series</div>
+      <div class="score-row">
+        <span class="score-label">Signal Integrity</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:55%"></div></div>
+        <span class="score-num" style="color:var(--gold)">55</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Comm. Reliability</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:40%"></div></div>
+        <span class="score-num" style="color:var(--gold)">40</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Avg Outage Duration</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:50%"></div></div>
+        <span class="score-num">3–5d</span>
+      </div>
+      <div class="parish-footer">
+        <span class="badge badge-orange">Priority: High</span>
+        <span class="badge badge-gold">Same corridor 2x in 48h</span>
+        <span class="badge badge-gray">1 follow-up issued</span>
+      </div>
+    </div>
+
+    <div class="parish-card priority-med">
+      <div class="parish-name">St. Andrew</div>
+      <div class="parish-meta">Expanding coverage · First normal flow signal documented</div>
+      <div class="score-row">
+        <span class="score-label">Signal Integrity</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:68%"></div></div>
+        <span class="score-num" style="color:var(--gold)">68</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Comm. Reliability</span>
+        <div class="score-bar-wrap"><div class="score-bar teal" style="width:58%"></div></div>
+        <span class="score-num" style="color:var(--teal)">58</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Avg Outage Duration</span>
+        <div class="score-bar-wrap"><div class="score-bar teal" style="width:20%"></div></div>
+        <span class="score-num" style="color:var(--teal)">&lt;1d</span>
+      </div>
+      <div class="parish-footer">
+        <span class="badge badge-gold">Priority: Medium</span>
+        <span class="badge badge-teal">Flatland mostly normal</span>
+        <span class="badge badge-gray">Conference: no timeline</span>
+      </div>
+    </div>
+
+    <div class="parish-card priority-med">
+      <div class="parish-name">St. John</div>
+      <div class="parish-meta">Concord Water System documented · High turbidity June 16</div>
+      <div class="score-row">
+        <span class="score-label">Signal Integrity</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:62%"></div></div>
+        <span class="score-num" style="color:var(--gold)">62</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Comm. Reliability</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:45%"></div></div>
+        <span class="score-num" style="color:var(--gold)">45</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Avg Outage Duration</span>
+        <div class="score-bar-wrap"><div class="score-bar gold" style="width:35%"></div></div>
+        <span class="score-num">2–4d</span>
+      </div>
+      <div class="parish-footer">
+        <span class="badge badge-gold">Priority: Medium</span>
+        <span class="badge badge-gold">Gouyave: normal flow</span>
+        <span class="badge badge-orange">Turbidity: no timeline</span>
+      </div>
+    </div>
+
+    <div class="parish-card priority-low">
+      <div class="parish-name">St. Patrick</div>
+      <div class="parish-meta">Coverage expanding · Lower report density</div>
+      <div class="score-row">
+        <span class="score-label">Signal Integrity</span>
+        <div class="score-bar-wrap"><div class="score-bar teal" style="width:74%"></div></div>
+        <span class="score-num" style="color:var(--teal)">74</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Comm. Reliability</span>
+        <div class="score-bar-wrap"><div class="score-bar teal" style="width:65%"></div></div>
+        <span class="score-num" style="color:var(--teal)">65</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Avg Outage Duration</span>
+        <div class="score-bar-wrap"><div class="score-bar teal" style="width:15%"></div></div>
+        <span class="score-num" style="color:var(--teal)">&lt;1d</span>
+      </div>
+      <div class="parish-footer">
+        <span class="badge badge-teal">Priority: Low</span>
+        <span class="badge badge-gray">Expanding coverage</span>
+      </div>
+    </div>
+
+    <div class="parish-card priority-high">
+      <div class="parish-name">St. Mark</div>
+      <div class="parish-meta">Gwanki — Infrastructure Exclusion Finding™ · No pipe infrastructure</div>
+      <div class="score-row">
+        <span class="score-label">Signal Integrity</span>
+        <div class="score-bar-wrap"><div class="score-bar red" style="width:15%"></div></div>
+        <span class="score-num" style="color:var(--red)">N/A</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Comm. Reliability</span>
+        <div class="score-bar-wrap"><div class="score-bar red" style="width:5%"></div></div>
+        <span class="score-num" style="color:var(--red)">N/A</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Infrastructure Status</span>
+        <div class="score-bar-wrap"><div class="score-bar red" style="width:100%"></div></div>
+        <span class="score-num" style="color:var(--red)">EXCL</span>
+      </div>
+      <div class="parish-footer">
+        <span class="badge badge-red">Service Exclusion</span>
+        <span class="badge badge-red">Gwanki: No pipe network</span>
+        <span class="badge badge-orange">CDB / FCDO priority</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="info-banner">
+    <div class="info-icon">◎</div>
+    <div>
+      <div class="info-title">Parish Intelligence Methodology</div>
+      <div class="info-body">Signal Integrity Score™ measures completeness and accuracy of available supply signals against declared schedules. Communication Reliability Score™ measures institutional advisory quality — advance notice rate, follow-up rate, and accuracy of restoration estimates. Scores are generated by the SYGNL Signal Integrity Framework™ and will be Claude AI-scored in Dashboard v2.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 4 — SIGNAL THREAD VIEW
+═══════════════════════════════════════════════════════ -->
+<div class="section" id="sec-thread">
+
+  <div class="section-header">
+    <div class="section-title">Signal Thread View</div>
+    <div class="section-meta">End-to-end signal lifecycle tracking</div>
+  </div>
+
+  <div class="thread-line">
+    <select class="thread-select" id="threadSelect" onchange="loadThread(this.value)">
+      <option value="morne">Signal Thread: Morne Delice — 131-Day Extended Disruption Cycle</option>
+      <option value="westerhall">Signal Thread: Westerhall Corridor — Restoration Timeline Revision Event</option>
+      <option value="gwanki">Signal Thread: Gwanki — Service Exclusion Finding™</option>
+      <option value="laborie">Signal Thread: La Borie — Community Outreach Gap</option>
+    </select>
+    <button class="btn btn-gold" onclick="loadThread(document.getElementById('threadSelect').value)">Load Thread</button>
+  </div>
+
+  <div class="thread-wrap" id="threadDisplay">
+    <div class="thread-spine" id="threadSpine"></div>
+    <div class="thread-spine-break" id="threadBreak" style="display:none;top:190px;height:60px"></div>
+    <div class="thread-id">Signal Thread #ST-2026-001 · Lane: WST Civic · Parish: St. George's · Community: Morne Delice</div>
+
+    <div class="thread-stage">
+      <div class="thread-dot complete"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 1 — Community Signal Collection</div>
+        <div class="thread-stage-detail">First community report: Morne Delice resident confirms ongoing supply disruption since February 2026. "Therefore since February I've been dealing with this." Submitted via WST community reporting platform.</div>
+        <div class="thread-stage-date">Feb 13, 2026 · Source: Community submission · Evidence: Community observation</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot complete"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 2 — Official Signal Cross-Reference</div>
+        <div class="thread-stage-detail">NAWASA advisory Mar 2: Les Avocats system placed under valve regulation. Morne Delice named. "Effective immediately — no restoration date." Official knowledge confirmed 17 days after first community signal. Institutional pattern begins: no cumulative advisory ever issued.</div>
+        <div class="thread-stage-date">Mar 2, 2026 · Source: NAWASA Facebook advisory · Validation: Cross-referenced with community reports</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot complete"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 3 — Pattern Detection Triggered</div>
+        <div class="thread-stage-detail">June 2 community report confirms manual valve operation — 10:40AM pulsating, 2:30–4:30PM trickle, 8:00–10:00PM strong flow then complete cutoff. This is not infrastructure failure. Water is physically available but valve-restricted. Pattern flag: service restoration variance under active manual control.</div>
+        <div class="thread-stage-date">Jun 2, 2026 · WST Report #WST-2026-045 · Pattern: Manual valve rotation cycle</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot flag"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 4 — Restoration Variance Documented <span class="badge badge-red">Critical</span></div>
+        <div class="thread-stage-detail">June 4 NAWASA advisory promises restoration by 11:00AM June 5. As of June 6 at 12:17AM — 13+ hours past deadline — water not restored. No follow-up advisory issued. Grenville not included in advisory despite active community disruption reports. This is the core WST finding: the gap between declared service and actual household access.</div>
+        <div class="thread-stage-date">Jun 4–6, 2026 · Restoration variance documented · No follow-up communication</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot flag"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 4B — Disconnection Notice During Active Disruption <span class="badge badge-gold">Observation</span></div>
+        <div class="thread-stage-detail">May 26: While 12 of 26 systems under valve regulation and Morne Delice area without water, NAWASA issues disconnection notice. Accounts 30+ days in arrears — disconnection, reconnection not guaranteed within 72 hours. No exemption. No cross-reference to ongoing supply disruptions. Institutional silo pattern confirmed.</div>
+        <div class="thread-stage-date">May 26, 2026 · NAWASA disconnection notice · Cross-referenced with active disruption record</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot active"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 5 — Signal Integrity Scoring <span class="badge badge-gold">AI Pending — Session 2</span></div>
+        <div class="thread-stage-detail">Simulated score based on 131-day record: Signal Integrity Score™ = 31/100. Communication Reliability Score™ = 18/100. Primary deductions: 5+ open-ended "until further notice" schedules, 1 confirmed missed restoration deadline (13+ hours), 1 community omitted from advisory during active disruption, 0 cumulative advisories in 131 days. Community Impact Duration™: Active — Day 131+.</div>
+        <div class="thread-stage-date">Simulated · Claude API scoring in Dashboard v2</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot active"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 6 — Institutional Pattern Classification</div>
+        <div class="thread-stage-detail">F1 pattern confirmed: Crisis began February 13 — not May. Institutional knowledge existed 95+ days before First Evidence Report published. F8 pattern: Advisory fragmentation — no single notice ever connected the full island picture across 134 days. Institutional pattern, not individual operational failure.</div>
+        <div class="thread-stage-date">Pattern classification: WST Institutional Pattern F1 + F8 · Active</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot pending"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 7 — Parish Report Output Generation <span class="badge badge-gray">Pending</span></div>
+        <div class="thread-stage-detail">Output pending: St. George's Parish Intelligence Report™ incorporating Morne Delice thread data. To be included in NAWASA Pilot Brief and CCCCC Development Partner Summary. Claude-generated output in Dashboard v2.</div>
+        <div class="thread-stage-date">Scheduled for Report Output tab</div>
+      </div>
+    </div>
+
+    <div class="thread-stage">
+      <div class="thread-dot pending"></div>
+      <div class="thread-content">
+        <div class="thread-stage-name">Stage 8 — Decision-Support Recommendation <span class="badge badge-gray">Pending</span></div>
+        <div class="thread-stage-detail">Recommended action: NAWASA engagement — community-level visibility briefing. GIZ brief: Morne Delice as case study for 90-day pilot expansion. Primary recommendation: cumulative advisory protocol — single weekly notice connecting all active systems. Pilot expansion: WST as evidence layer G-CREWS never had.</div>
+        <div class="thread-stage-date">Pending stakeholder meeting outputs</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 5 — PATTERN DETECTION
+═══════════════════════════════════════════════════════ -->
+<div class="section" id="sec-patterns">
+
+  <div class="section-header">
+    <div class="section-title">Pattern Detection — Institutional Analysis</div>
+    <div class="section-meta">10 active findings · Built from NAWASA's own public communications</div>
+  </div>
+
+  <div class="pattern-grid">
+    <div class="pattern-card red-card">
+      <div class="pattern-number">131+</div>
+      <div class="pattern-title">Days — Morne Delice Active Disruption Cycle</div>
+      <div class="pattern-desc">First community signal Feb 13. Still active June 24. Community Impact Duration™ Event #1: the longest documented single-community disruption cycle in this pilot.</div>
+    </div>
+    <div class="pattern-card red-card">
+      <div class="pattern-number">4+</div>
+      <div class="pattern-title">Missed Restoration Deadlines — No Follow-Up</div>
+      <div class="pattern-desc">Advisories with specific restoration estimates not met, no follow-up communication issued. Only 1 follow-up in 134-day record — Jun 16, Westerhall corridor. That is the exception.</div>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-number">5+</div>
+      <div class="pattern-title">Open-Ended "Until Further Notice" Schedules</div>
+      <div class="pattern-desc">Valve regulation schedules with no restoration commitment, no review date, no accountability mechanism. Communities placed under indefinite regulation with no institutional timeline.</div>
+    </div>
+    <div class="pattern-card red-card">
+      <div class="pattern-number">3+</div>
+      <div class="pattern-title">Communities Omitted From Advisories During Active Disruption</div>
+      <div class="pattern-desc">Morne Delice (Apr 4 — Day 6 without water, not on list). Grenville (Jun 5 — active disruption, not in advisory). Hope Vale (outside scheduled window). Advisories systematically undercount affected population.</div>
+    </div>
+    <div class="pattern-card teal-card">
+      <div class="pattern-number">12</div>
+      <div class="pattern-title">Systems Simultaneously Under Regulation — Peak May 13</div>
+      <div class="pattern-desc">No single advisory connected the cumulative impact across all 26 systems. A resident reading any individual notice had no way of knowing 12 systems were simultaneously disrupted. This fragmentation is itself an institutional pattern.</div>
+    </div>
+    <div class="pattern-card red-card">
+      <div class="pattern-number">23d</div>
+      <div class="pattern-title">Production Conditions Disclosed 23 Days After Communities Already Affected</div>
+      <div class="pattern-desc">May 13 advisory: -40% Les Avocats, -47% Petit Etang, -69% Bon Accord. Communities had been without water for weeks before this disclosure. Institutional knowledge existed — but was not communicated.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:8px">
+    <div class="section-title">Institutional Pattern Findings — Full Record</div>
+    <div class="section-meta">F1 through F10 · Second Evidence Report</div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F1</span> Crisis began February — not May</div>
+    <div class="finding-title">First institutional advisory Feb 13, 2026 — 95 days before First Evidence Report</div>
+    <div class="finding-body">The crisis that community reports captured in May was not new. It had been building institutionally for at least 95 days before the First Evidence Report was published. NAWASA's own records confirm the origin. The community felt it first — in February.</div>
+    <div class="finding-tags"><span class="badge badge-red">Active</span><span class="badge badge-gold">St. George's</span><span class="badge badge-orange">Timeline Gap</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F2</span> Disconnection notices during active supply disruption</div>
+    <div class="finding-title">May 26 — Disconnection notices issued while 12 systems under valve regulation</div>
+    <div class="finding-body">No exemption offered. No cross-reference to ongoing disruption. No acknowledgment that customers being disconnected may not have had water for weeks. This is institutional silo behavior — two departments operating without coordination during a system-wide crisis.</div>
+    <div class="finding-tags"><span class="badge badge-red">Institutional Pattern</span><span class="badge badge-gold">Documented</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F3</span> Production conditions disclosed 23 days late</div>
+    <div class="finding-title">Institutional knowledge existed before public was informed</div>
+    <div class="finding-body">-40% at Les Avocats, -47% at Petit Etang, -69% at Bon Accord disclosed May 13. Communities had been without consistent water for weeks. The data existed internally before it was shared publicly. This is not a communication failure — it is a communication pattern.</div>
+    <div class="finding-tags"><span class="badge badge-red">Institutional Pattern</span><span class="badge badge-gold">Disclosure Gap</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F4</span> Advisory restoration timelines routinely revised without follow-up</div>
+    <div class="finding-title">May 27, May 29, Jun 4 — restoration estimates not met, no follow-up issued</div>
+    <div class="finding-body">Only 1 follow-up notice in 134-day record: June 16, Westerhall corridor. This is notable precisely because it is the exception. In most instances, when an original estimate required revision, communities received no communication. They simply waited.</div>
+    <div class="finding-tags"><span class="badge badge-red">Pattern: Active</span><span class="badge badge-gray">1 exception: Jun 16</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F5</span> Communities omitted from advisories despite active disruption</div>
+    <div class="finding-title">Morne Delice (Apr 4) · Grenville (Jun 5) · Hope Vale (Mar 19)</div>
+    <div class="finding-body">WST community reports confirmed active disruption in communities not named in official advisories. The advisories systematically undercount the affected population. This is not an error in individual notices — it is a structural visibility gap.</div>
+    <div class="finding-tags"><span class="badge badge-red">Structural</span><span class="badge badge-orange">3+ confirmed instances</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F6</span> Brandon Hall Dam tampering — national water security event</div>
+    <div class="finding-title">May 14 — complete water loss, no definitive restoration timeline</div>
+    <div class="finding-body">Deliberate tampering. La Digue, Holy Innocence, Union, Battle Hill, Caruth, The Villa, Harford Village, Cook Hill affected. "The Authority is unable to provide a definitive timeframe for restoration." This placed additional cascading pressure on an already stressed 12-system network.</div>
+    <div class="finding-tags"><span class="badge badge-red">Security Event</span><span class="badge badge-red">No Timeline</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F7</span> St. George's University deployed its own water tanker</div>
+    <div class="finding-title">Private institution supplemented public utility operations during disruption</div>
+    <div class="finding-body">SGU officially deployed its water tanker and operator to assist with deliveries in the southern network. Disclosed in NAWASA's own May 13 advisory. This is an observable instance of private supplementation during public utility disruption — a visible signal that normal utility capacity was insufficient.</div>
+    <div class="finding-tags"><span class="badge badge-orange">Supplemental Response</span><span class="badge badge-gold">Officially Disclosed</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F8</span> Advisories issued in silos — no cumulative picture ever provided</div>
+    <div class="finding-title">0 cumulative advisories in 134 days</div>
+    <div class="finding-body">Every advisory addressed a single system, cluster, or incident. Not one connected the cumulative impact across all 26 systems. WST is the only platform that connected this data across systems, parishes, and time. This is the intelligence gap WST closes.</div>
+    <div class="finding-tags"><span class="badge badge-red">Structural</span><span class="badge badge-teal">WST closes this gap</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F9</span> "Effective immediately and until further notice" — language of indefinite disruption</div>
+    <div class="finding-title">No restoration commitment, no review date, no accountability mechanism</div>
+    <div class="finding-body">Five or more schedules issued with this language. Communities placed under open-ended regulation have no institutional timeline to plan around. No commitment made. No follow-up mechanism established. This language choice is itself a policy signal.</div>
+    <div class="finding-tags"><span class="badge badge-red">Policy Signal</span><span class="badge badge-orange">5+ instances</span></div>
+  </div>
+
+  <div class="finding-card">
+    <div class="finding-num"><span>F10</span> Restoration Timeline Revision Events — NEW <span class="badge badge-teal">Positive</span></div>
+    <div class="finding-title">Jun 15–16: First documented follow-up communication in 134-day record</div>
+    <div class="finding-body">June 16 follow-up notice for Westerhall corridor represents the first instance where NAWASA issued a follow-up when an original estimate required revision. Water restored approximately 27 hours after original estimate. This represents an observable change in communication behavior — worth tracking as a potential institutional signal shift.</div>
+    <div class="finding-tags"><span class="badge badge-teal">Behavioral Change</span><span class="badge badge-gold">Track Forward</span></div>
+  </div>
+
+  <div class="section-header" style="margin-top:16px">
+    <div class="section-title">Service Exclusion Finding™ — Gwanki</div>
+    <div class="section-meta">Infrastructure Visibility Gap · Not a service restoration variance</div>
+  </div>
+
+  <div class="alert-banner">
+    <div class="alert-icon">⚠</div>
+    <div>
+      <div class="alert-title">Gwanki — Infrastructure Exclusion Finding™</div>
+      <div class="alert-body">Gwanki has zero pipe infrastructure. This community has never been connected to the water distribution network. This is not a service restoration variance — it is a Service Exclusion Finding™. The community is not experiencing a service disruption — it is experiencing infrastructure exclusion. Classification for all formal outputs: Infrastructure Visibility Gap. Recommended framing for CDB and FCDO: evidence of communities outside the service boundary, not communities experiencing service failure. This finding strengthens the case for infrastructure investment, not operational accountability.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 6 — REPORT OUTPUTS
+═══════════════════════════════════════════════════════ -->
+<div class="section" id="sec-output">
+
+  <div class="section-header">
+    <div class="section-title">Report Output Area — Decision-Support</div>
+    <div class="section-meta">NAWASA / Government Summary · SYGNL Technologies™</div>
+    </div>
+
+  <div class="output-tabs">
+    <button class="output-tab active" onclick="showOutput('parish-report')">Parish Intelligence Report™</button>
+    <button class="output-tab" onclick="showOutput('comm-reliability')">Communication Reliability</button>
+    
+    <button class="output-tab" onclick="showOutput('exclusion')">Service Exclusion Finding™</button>
+    <button class="output-tab" onclick="showOutput('nawasa-brief')">NAWASA Summary</button>
+  </div>
+
+  <!-- PARISH REPORT -->
+  <div class="output-panel active" id="out-parish-report">
+    <div class="report-card">
+      <div class="report-header">
+        <div>
+          <div class="report-title">St. George's Parish Intelligence Report™</div>
+          <div class="report-meta">Water Signal Tracker™ · SYGNL Technologies™ · Pilot Intelligence Summary · June 2026</div>
+        </div>
+        <div>
+          <span class="badge badge-red">Critical Priority</span>
+        </div>
+      </div>
+      <div class="report-stat-row">
+        <div class="report-stat"><div class="report-stat-num">38</div><div class="report-stat-label">Signal Integrity Score™</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--red)">22</div><div class="report-stat-label">Comm. Reliability Score™</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--text)">21</div><div class="report-stat-label">Community Reports</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--red)">131+</div><div class="report-stat-label">Days Active Disruption</div></div>
+      </div>
+      <div class="report-body">
+        <p><strong>Executive Summary:</strong> St. George's Parish has produced 21 of 33 first-evidence community reports (64%) and represents the highest-pressure zone in the current water service disruption cycle documented by Water Signal Tracker™. Five communities — Mt. Parnassus, La Borie, St. Paul's, Morne Delice, and Bay Gardens — reported zero water access at some point during the pilot period. This is not reduced supply. This is zero access.</p>
+        <div class="report-section">
+          <div class="report-section-title">Primary Communities — Critical Status</div>
+          <p><strong>Morne Delice (Hillside):</strong> First community signal February 13, 2026. Disruption cycle still active as of June 24 — 131+ days. Manual valve control confirmed June 2. Restoration variance June 5 — promised 11:00AM, unrestored 13+ hours past estimated deadline. Community Impact Duration™ Event #1: the most documented single-community water access record in this pilot.</p>
+          <br>
+          <p><strong>La Borie (Hilltop):</strong> <span class="warning">No NAWASA response since April 2026 despite repeated outreach attempts.</span> Two separate residents (June 9 and June 10) confirmed no contact and no water truck delivery. This directly contrasts with Finding #06 — NAWASA proactively contacted Morne Delice on May 29. The same reactive delivery model is not reaching La Borie. This is a named, specific accountability gap.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">Elevation Pattern Finding</div>
+          <p>The data confirms a pressure-zone imbalance: hilltop and hillside communities (Mt. Parnassus, La Borie, St. Paul's, Morne Delice) report the longest and most severe disruptions. Flatland communities (River Road, Calliste) report mixed results. This is consistent with infrastructure pressure dynamics and supports <span class="highlight">pressure-zone engineering as a targeted intervention priority.</span></p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">WST Signal vs. Official Record Gap</div>
+          <p>NAWASA's published valve regulation schedule declared supply availability 5:00AM–3:00PM daily. <strong>Community reports submitted during that window show zero water access</strong> — confirming a measurable gap between declared supply and actual household delivery. This gap is the core measurement Water Signal Tracker™ was designed to make visible. It is not detectable from official advisory data alone.</p>
+        </div>
+        <div class="copy-note">⚠ Confidential — Pilot Intelligence Summary — Full methodology withheld pending funded agreement. "WST gives NAWASA community-level visibility they do not currently have." — SYGNL Technologies™</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMUNICATION RELIABILITY -->
+  <div class="output-panel" id="out-comm-reliability">
+    <div class="report-card">
+      <div class="report-header">
+        <div>
+          <div class="report-title">Communication Reliability Summary</div>
+          <div class="report-meta">Water Signal Tracker™ · 134-Day Record · Feb 13 – Jun 17, 2026</div>
+        </div>
+        <span class="badge badge-red">Score: 34/100</span>
+      </div>
+      <div class="report-stat-row">
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--red)">4+</div><div class="report-stat-label">Missed deadlines, no follow-up</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--red)">3+</div><div class="report-stat-label">Communities omitted from notices</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--red)">5+</div><div class="report-stat-label">Open-ended "until further notice"</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--teal)">1</div><div class="report-stat-label">Follow-up issued (Jun 16)</div></div>
+      </div>
+      <div class="report-body">
+        <p><strong>Core finding:</strong> The Communication Reliability Score™ of 34/100 reflects a systemic institutional pattern — not isolated operational variances. Across 134 days and 35+ advisories, the gap between what NAWASA communicated and what communities experienced was consistent, measurable, and structural.</p>
+        <div class="report-section">
+          <div class="report-section-title">Institutional Pattern — Key Observations</div>
+          <p>Every advisory addressed a single system or incident. <strong>Not one advisory in 134 days connected the cumulative impact across all 26 systems.</strong> A resident reading any individual notice had no way of knowing that 12 systems were simultaneously under regulation. WST connected this data — NAWASA's own data — across systems, parishes, and time. That connection did not previously exist in any public format.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">Observable Communication Shift — June 16</div>
+          <p>The June 16 follow-up notice for the Westerhall corridor marks the first time in the 134-day record where NAWASA issued a follow-up communication when an original restoration estimate required revision. <span class="highlight">This is an observable change in communication behavior.</span> Water Signal Tracker™ will track whether this represents a sustained shift or a single-event exception going forward.</p>
+        </div>
+        <div class="copy-note">Language standard: All outputs use "service restoration variance" not "failure." "Institutional pattern" not "communication gap." WST does not evaluate operational decisions — it documents community-reported service conditions and observed outcomes.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTITUTIONAL PATTERN REPORT -->
+  <div class="report-meta">Water Signal Tracker™ · Second Evidence Report · Sharon L. Simmons — SYGNL Technologies™</div>
+        </div>
+        <span class="badge badge-gold">Internal Use</span>
+      </div>
+      <div class="report-body">
+        <p><strong>This report is an internal signal intelligence output.</strong> It documents the 10 institutional pattern findings (F1–F10) derived from NAWASA's own public communications cross-referenced with WST community data. It is the evidence base from which all stakeholder outputs are derived.</p>
+        <div class="report-section">
+          <div class="report-section-title">Signal Chain — Complete Observation (Second Evidence Report)</div>
+          <p>Community Report Submitted → Official Advisories Documented → Infrastructure Activity Observed → Household Adaptation Observed. This four-layer signal chain is the WST proof-of-concept. No other platform in Grenada combines all four layers into a single intelligence output.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">Methodology Statement</div>
+          <p>"Water Signal Tracker™ does not evaluate operational decisions. It documents community-reported service conditions and observed outcomes." This statement applies to all formal outputs. The findings are not a report card. They are evidence of what the community experienced alongside what the institution communicated.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">CWWA Abstract Language Standards</div>
+          <p>Service restoration variance · Communication reliability · Institutional omission pattern · Advisory fragmentation · Community Impact Duration™ · Infrastructure Visibility Gap. These are the terms in use across all formal and conference materials. The word "failure" does not appear in any WST output.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE EXCLUSION -->
+  <div class="output-panel" id="out-exclusion">
+    <div class="report-card">
+      <div class="report-header">
+        <div>
+          <div class="report-title">Service Exclusion Finding™ — Gwanki, St. Mark</div>
+          <div class="report-meta">Water Signal Tracker™ · Infrastructure Visibility Gap Classification · June 2026</div>
+        </div>
+        <span class="badge badge-red">Exclusion — Not Variance</span>
+      </div>
+      <div class="report-body">
+        <p><strong>Classification:</strong> Service Exclusion Finding™. This is not a service restoration variance. Gwanki, St. Mark has zero pipe infrastructure. The community has never been connected to the water distribution network. There is no service to restore — because service was never extended.</p>
+        <div class="report-section">
+          <div class="report-section-title">Infrastructure Visibility Gap — Definition</div>
+          <p>An Infrastructure Visibility Gap is a community whose water access conditions — specifically, the complete absence of distribution infrastructure — are not reflected in official utility advisory or service records, because the community lies outside the service boundary. WST field observation documented Gwanki as this classification. Field photographs available for evidence reporting.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">Relevance to Development Partners</div>
+          <p>For <strong>CDB and FCDO</strong>: Gwanki represents a category of community excluded from the distribution network — not experiencing service disruption but experiencing infrastructure exclusion. This finding is a direct input for infrastructure investment prioritization frameworks. WST documentation provides the community-level evidence layer that typically requires funded field assessment to produce.</p>
+          <br>
+          <p>For <strong>CCCCC and GIZ</strong>: Infrastructure Visibility Gaps represent the category of community most likely to be systematically undercounted in utility service reporting. WST's community signal methodology is specifically designed to surface findings that official advisory data does not capture. The Gwanki finding demonstrates this capability directly.</p>
+        </div>
+        <div class="copy-note">Framing rule: In all formal, conference, and stakeholder outputs — Gwanki is an Infrastructure Exclusion, not a service failure. The community has no pipe infrastructure. This distinction matters for funding conversations. CDB and FCDO respond to infrastructure investment opportunity, not operational accountability claims.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEVELOPMENT PARTNER BRIEF -->
+  <div class="report-meta">Water Signal Tracker™ · SYGNL Technologies™ · For GIZ · CCCCC · CDB · UNDP W4R · FCDO · UWI CERMES · GWP Caribbean</div>
+        </div>
+        <span class="badge badge-teal">Partner View</span>
+      </div>
+      <div class="report-stat-row">
+        <div class="report-stat"><div class="report-stat-num">72</div><div class="report-stat-label">Community Reports</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--text)">6</div><div class="report-stat-label">Grenada Parishes</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--gold)">134</div><div class="report-stat-label">Days Documented</div></div>
+        <div class="report-stat"><div class="report-stat-num" style="color:var(--red)">0</div><div class="report-stat-label">Paid promotion used</div></div>
+      </div>
+      <div class="report-body">
+        <p><strong>WST has already produced evidence.</strong> We are seeking alignment with your existing objectives — not requesting platform funding. The Water Signal Tracker™ pilot has documented 72 community-generated water signal reports across all 6 Grenada parishes. This evidence was built at no cost to government or utility partners, with no paid promotion, and is grounded in both community-submitted data and official institutional advisory records.</p>
+        <div class="report-section">
+          <div class="report-section-title">What WST Provides That No Other Platform Provides</div>
+          <p>Official advisory data captures what utilities report. WST captures what communities experience. The gap between those two signals — measurable, timestamped, cross-referenced — is where resilience risk hides. WST is the only platform in Grenada combining community-reported service conditions, official utility advisories, and observable infrastructure context into a single intelligence layer.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">Alignment with Development Partner Mandates</div>
+          <p>For <strong>GIZ / G-CREWS</strong>: WST provides the community evidence layer G-CREWS was not designed to produce. 72 reports across 6 parishes with active disruption cycle documentation represents the type of community-level signal intelligence that informs resilience investment decisions.</p>
+          <br>
+          <p>For <strong>UNDP W4R</strong>: "Community-driven interventions can help inform and drive national and sectoral policies." — Stephanie Ziebell, UNDP W4R. WST is community-driven intelligence applied to the national policy challenge of water service equity.</p>
+          <br>
+          <p>For <strong>CCCCC</strong>: WST documents the community-level consequence of climate-driven dry season conditions — production deficits, extended disruption cycles, and institutional response patterns. This data supports climate resilience assessment and early warning system design.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">90-Day Pilot Proposal</div>
+          <p>A funded 90-day pilot would expand coverage across all 6 parishes, produce monthly cross-system intelligence reports, and build the evidentiary foundation for infrastructure intervention, policy accountability, and resilience investment across the Caribbean. Full methodology, scoring system, analytics engine, and predictive capabilities are available under funded agreement.</p>
+        </div>
+        <div style="margin-top:20px;padding:20px;border:1px solid var(--gold);border-radius:8px;background:rgba(245,166,35,0.04);text-align:center">
+          <div style="font-size:16px;font-weight:900;color:var(--text);line-height:1.7">The intelligence layer is live.<br>The pilot is ready.<br><span style="color:var(--red)">The community cannot wait another 131 days.</span></div>
+        </div>
+        <div class="copy-note">Provisional Patent Application No. 64/085,836 · Filed June 9, 2026 · Sharon L. Simmons, Founder & CIO · SYGNL Technologies™ · sharon@sygnltech.com · +1 (473) 414-6509</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAWASA BRIEF -->
+  <div class="output-panel" id="out-nawasa-brief">
+    <div class="report-card">
+      <div class="report-header">
+        <div>
+          <div class="report-title">NAWASA Community Visibility Summary</div>
+          <div class="report-meta">Water Signal Tracker™ · SYGNL Technologies™· Grenada, West Indies · June 2026</div>
+        </div>
+        <span class="badge badge-teal">NAWASA View</span>
+      </div>
+      <div class="report-body">
+        <p><strong>Core value:</strong> WST gives NAWASA community-level visibility they do not currently have. Official advisories document what the utility schedules. WST documents what communities experience. These are not the same dataset. The gap between them is measurable — and it is exactly the gap NAWASA's community engagement strategy needs to close.</p>
+        <div class="report-section">
+          <div class="report-section-title">What This Data Means for NAWASA</div>
+          <p>72 community reports across 6 parishes document community-level service conditions alongside official advisory records. Where they align, the system is working. Where they diverge — Morne Delice, La Borie, Grenville, Hope Vale — that divergence is a named, specific signal about where community experience and institutional communication are not synchronized.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">Observable Positive Signal — June 16</div>
+          <p>The June 16 follow-up advisory for the Westerhall corridor — the first follow-up communication in the 134-day record — is an observable positive signal. WST documents this as a behavioral change worth tracking. If follow-up communication becomes the norm rather than the exception, the Communication Reliability Score™ will reflect that directly.</p>
+        </div>
+        <div class="report-section">
+          <div class="report-section-title">WST Methodology Note</div>
+          <p>"Water Signal Tracker™ does not evaluate operational decisions. It documents community-reported service conditions and observed outcomes." WST is not a compliance or evaluation tool. It is a community visibility tool — and community visibility is exactly what a utility needs to close the gap between scheduled service and actual household access.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- end .main -->
+
+<!-- FOOTER -->
+<div class="dash-footer">
+  <div class="footer-brand">
+    <strong>Water Signal Tracker™</strong> · SYGNL Technologies™ · Lane 4: WST Civic Intelligence<br>
+    Sharon L. Simmons · sharon@sygnltech.com · +1 (473) 414-6509<br>
+    Provisional Patent No. 64/085,836 · Filed June 9, 2026
+  </div>
+  <div class="footer-meta">
+    Dashboard v1.0 — Prototype · Mock Data<br>
+    72 community reports · All 6 parishes · As of June 24, 2026<br>
+    Supabase + Claude API integration: Session 2
+  </div>
+</div>
+
+<script>
+// ── NAV TAB SWITCHING ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  var sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── MODE TOGGLE ──
+function setMode(mode) {
+  var body = document.getElementById('mainContent');
+  body.className = '';
+  body.classList.add('mode-' + mode);
+  document.querySelector('.topbar-brand').style.borderLeft = mode === 'nawasa' ? '3px solid #00C9B1' : mode === 'dev' ? '3px solid #F5A623' : '';
+  // Show/hide nav tabs based on mode
+  var queueTab = document.querySelector('[onclick*="queue"]');
+  if (queueTab) queueTab.style.display = mode === 'sharon' ? '' : 'none';
+}
+
+// ── OUTPUT TAB SWITCHING ──
+function showOutput(id) {
+  document.querySelectorAll('.output-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.output-tab').forEach(t => t.classList.remove('active'));
+  var panel = document.getElementById('out-' + id);
+  if (panel) panel.classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── QUEUE FILTER ──
+function filterQueue(val) {
+  var rows = document.querySelectorAll('#queueBody tr');
+  rows.forEach(function(row) {
+    var text = (row.getAttribute('data-search') || row.textContent).toLowerCase();
+    row.style.display = text.indexOf(val.toLowerCase()) > -1 ? '' : 'none';
+  });
+}
+function filterByStatus(val) {
+  var rows = document.querySelectorAll('#queueBody tr');
+  rows.forEach(function(row) {
+    var status = row.getAttribute('data-status') || '';
+    row.style.display = (val === 'all' || status === val) ? '' : 'none';
+  });
+}
+
+// ── VERIFY ACTION ──
+function verifyReport(id) {
+  var rows = document.querySelectorAll('#queueBody tr');
+  rows.forEach(function(row) {
+    if (row.textContent.indexOf(id) > -1) {
+      var badge = row.querySelector('.badge-orange');
+      if (badge) {
+        badge.className = 'badge badge-teal';
+        badge.textContent = 'Verified';
+      }
+      var btn = row.querySelector('.btn-gold');
+      if (btn) {
+        btn.textContent = 'Done';
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+      }
+    }
+  });
+}
+
+// ── SIGNAL THREAD LOADER ──
+function loadThread(val) {
+  var threads = {
+    morne: {
+      id: 'ST-2026-001 · Morne Delice · 131-Day Extended Disruption Cycle',
+      stages: [
+        {dot:'complete', name:'Stage 1 — Community Signal Collection', detail:'First community report: Feb 13, 2026. Morne Delice resident confirms disruption since February. WST submission via community reporting platform.', date:'Feb 13, 2026 · Source: Community'},
+        {dot:'complete', name:'Stage 2 — Official Signal Cross-Reference', detail:'NAWASA advisory Mar 2: Les Avocats valve regulation. Morne Delice named — no restoration date. Institutional knowledge confirmed 17 days after first community signal.', date:'Mar 2, 2026 · Source: NAWASA advisory'},
+        {dot:'complete', name:'Stage 3 — Pattern Detection', detail:'June 2: manual valve operation confirmed. 3 supply events in one day. Water physically available but valve-restricted. Pattern: service restoration variance under active manual control.', date:'Jun 2, 2026 · WST-2026-045'},
+        {dot:'flag', name:'Stage 4 — Restoration Variance ⚠', detail:'June 4 advisory: restoration promised 11AM June 5. Unrestored at 12:17AM June 6 — 13+ hours past deadline. No follow-up issued. Grenville omitted despite active disruption.', date:'Jun 4–6, 2026 · Restoration variance documented'},
+        {dot:'active', name:'Stage 5 — Scoring (Simulated)', detail:'Signal Integrity Score™: 31/100. Communication Reliability Score™: 18/100. Community Impact Duration™: Active — Day 131+.', date:'Simulated · Claude API in v2'},
+        {dot:'pending', name:'Stage 6 — Output Pending', detail:'St. George\'s Parish Report™, NAWASA brief, CCCCC summary. Claude-generated in Dashboard v2.', date:'Pending'}
+      ]
+    },
+    westerhall: {
+      id: 'ST-2026-065 · Westerhall Corridor · Restoration Timeline Revision Event',
+      stages: [
+        {dot:'complete', name:'Stage 1 — Community Signal', detail:'Corinth/Westerhall corridor: broken main reported May 27. Restoration estimate 2PM May 28.', date:'May 27, 2026'},
+        {dot:'flag', name:'Stage 2 — Second Break in 48 Hours ⚠', detail:'Same corridor: second broken main May 29 — within 48 hours of first. Restoration estimate 6PM May 29. Same corridor broken twice in 48 hours is an infrastructure pattern signal.', date:'May 29, 2026'},
+        {dot:'complete', name:'Stage 3 — Pattern Flag', detail:'June 15: same St. David corridor — third event. Restoration estimate 8PM June 15.', date:'Jun 15, 2026'},
+        {dot:'complete', name:'Stage 4 — First Follow-Up Issued', detail:'June 16: NAWASA issues first follow-up notice in 134-day record. Revised estimate: 12:00 noon June 16. Repair crews completed pipeline replacement — unforeseen site conditions cited.', date:'Jun 16, 2026 · First follow-up in 134 days'},
+        {dot:'complete', name:'Stage 5 — Restoration Confirmed', detail:'Water restored to Westerhall corridor approx 27 hours after original estimate — late evening June 16 into June 17. High initial pressure; subsequently reduced. WST report submitted June 17.', date:'Jun 16–17, 2026 · Restoration confirmed'},
+        {dot:'active', name:'Stage 6 — Behavioral Signal', detail:'F10 finding: First follow-up advisory in 134-day record. Observable positive communication behavior change. WST will track whether this is sustained or a single-event exception.', date:'Active monitoring'}
+      ]
+    },
+    gwanki: {
+      id: 'ST-2026-EX-001 · Gwanki · Service Exclusion Finding™',
+      stages: [
+        {dot:'complete', name:'Stage 1 — Field Observation', detail:'WST field observation: Gwanki, St. Mark. Zero pipe infrastructure documented. Community not connected to distribution network.', date:'June 2026 · Field documentation'},
+        {dot:'complete', name:'Stage 2 — Classification', detail:'Service Exclusion Finding™. This is not a service restoration variance. Community lies outside the service boundary. Infrastructure has never been extended to this community.', date:'Classification confirmed'},
+        {dot:'complete', name:'Stage 3 — Infrastructure Visibility Gap', detail:'Gwanki is not experiencing service disruption — it is experiencing infrastructure exclusion. Distinction critical for funding conversations with CDB and FCDO.', date:'Evidence Report inclusion'},
+        {dot:'active', name:'Stage 4 — Development Partner Brief', detail:'Finding packaged for CDB/FCDO infrastructure investment brief. Gwanki as primary Infrastructure Visibility Gap evidence. Field photos to be inserted in Evidence Report 3.', date:'In preparation'},
+        {dot:'pending', name:'Stage 5 — Formal Output', detail:'Service Exclusion Finding™ formal report. FCDO brief. CDB investment context note. Evidence Report 3 section.', date:'Pending Session 2'}
+      ]
+    },
+    laborie: {
+      id: 'ST-2026-009 · La Borie · Accountability Gap / No NAWASA Response',
+      stages: [
+        {dot:'complete', name:'Stage 1 — Community Signal', detail:'La Borie, St. George\'s (Hilltop). No water since April 2026. Report submitted May 17 — "over a month" duration.', date:'May 17, 2026 · WST-2026-009'},
+        {dot:'complete', name:'Stage 2 — Repeated Outreach Confirmed', detail:'Two separate residents (June 9 and June 10) report no NAWASA response despite repeated calls requesting water truck delivery. "I haven\'t heard not one word, neither gotten not even 1 drum filled."', date:'Jun 9–10, 2026 · WST-2026-069 / 070'},
+        {dot:'flag', name:'Stage 3 — Community Outreach Gap ⚠', detail:'Finding #10: La Borie outreach reports no NAWASA response. This directly contrasts with Finding #06 — NAWASA proactively called Morne Delice May 29 to offer truck delivery. Same reactive delivery model not reaching La Borie.', date:'Community outreach gap documented'},
+        {dot:'complete', name:'Stage 4 — Pattern Classification', detail:'F10 confirmed: La Borie is a specific, named community where the utility\'s own reactive delivery model is not functioning as intended. This is not a scheduling issue — it is an absence of outreach to a named community despite repeated contact attempts.', date:'Pattern: Reactive delivery gap'},
+        {dot:'pending', name:'Stage 5 — NAWASA Briefing', detail:'La Borie finding included in NAWASA community visibility brief. Specific community named. Specific gap documented. No operational blame assigned — visibility gap framing.', date:'Pending NAWASA meeting'}
+      ]
+    }
+  };
+
+  var t = threads[val];
+  if (!t) return;
+  var html = '<div class="thread-id">Signal Thread #' + t.id + '</div>';
+  t.stages.forEach(function(s) {
+    html += '<div class="thread-stage">';
+    html += '<div class="thread-dot ' + s.dot + '"></div>';
+    html += '<div class="thread-content">';
+    html += '<div class="thread-stage-name">' + s.name + '</div>';
+    html += '<div class="thread-stage-detail">' + s.detail + '</div>';
+    html += '<div class="thread-stage-date">' + s.date + '</div>';
+    html += '</div></div>';
+  });
+  document.getElementById('threadDisplay').innerHTML = html;
+}
+
+// Init
+setMode('nawasa');
+
+// ── PARISH PIE CHART ──
+(function drawParishPie() {
+  var data = [
+    { parish: "St. George's", count: 28, color: '#FF4B4B' },
+    { parish: "St. Andrew",   count: 16, color: '#F5A623' },
+    { parish: "St. David",    count: 12, color: '#00C9B1' },
+    { parish: "St. John",     count:  8, color: '#7B8FCC' },
+    { parish: "St. Patrick",  count:  5, color: '#A78BFA' },
+    { parish: "St. Mark",     count:  3, color: '#6B7FA3' }
+  ];
+  var total = data.reduce(function(s,d){return s+d.count},0);
+
+  function init() {
+    var canvas = document.getElementById('parishPie');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var cx = 130, cy = 130, r = 110, inner = 58;
+    var startAng = -Math.PI / 2;
+    var hovered = -1;
+
+    function draw(hov) {
+      ctx.clearRect(0,0,260,260);
+      var ang = startAng;
+      data.forEach(function(d,i) {
+        var slice = (d.count / total) * Math.PI * 2;
+        var pull = (hov === i) ? 10 : 0;
+        var mid = ang + slice / 2;
+        var dx = Math.cos(mid) * pull, dy = Math.sin(mid) * pull;
+        ctx.beginPath();
+        ctx.moveTo(cx+dx, cy+dy);
+        ctx.arc(cx+dx, cy+dy, r, ang, ang+slice);
+        ctx.closePath();
+        ctx.fillStyle = d.color;
+        ctx.fill();
+        ctx.strokeStyle = '#08111F';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ang += slice;
+      });
+      ctx.beginPath();
+      ctx.arc(cx, cy, inner, 0, Math.PI*2);
+      ctx.fillStyle = '#0D1C2E';
+      ctx.fill();
+      ctx.fillStyle = '#F5A623';
+      ctx.font = '900 28px DM Sans, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      if (hov >= 0) {
+        ctx.fillText(data[hov].count, cx, cy-8);
+        ctx.fillStyle = '#6B7FA3';
+        ctx.font = '600 10px DM Sans, sans-serif';
+        ctx.fillText(data[hov].parish.split(" ")[0].toUpperCase(), cx, cy+10);
+      } else {
+        ctx.fillText('72', cx, cy-8);
+        ctx.fillStyle = '#6B7FA3';
+        ctx.font = '600 10px DM Sans, sans-serif';
+        ctx.fillText('REPORTS', cx, cy+10);
+      }
+    }
+
+    var leg = document.getElementById('parishLegend');
+    if (leg) {
+      data.forEach(function(d) {
+        var pct = Math.round((d.count/total)*100);
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px';
+        row.innerHTML = '<div style="width:12px;height:12px;border-radius:3px;background:'+d.color+';flex-shrink:0"></div>'
+          + '<div style="flex:1;font-size:12px;color:#F0F4FF;font-weight:600">'+d.parish+'</div>'
+          + '<div style="font-size:12px;font-weight:800;color:'+d.color+'">'+d.count+'</div>'
+          + '<div style="font-size:11px;color:#6B7FA3;min-width:32px;text-align:right">'+pct+'%</div>';
+        leg.appendChild(row);
+      });
+      var note = document.createElement('div');
+      note.style.cssText = 'font-size:10px;color:#6B7FA3;margin-top:6px;padding-top:8px;border-top:1px solid #132338';
+      note.textContent = 'Current working distribution  72 total';
+      leg.appendChild(note);
+    }
+
+    canvas.addEventListener('mousemove', function(e) {
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      var dx = mx - cx, dy = my - cy;
+      var dist = Math.sqrt(dx*dx+dy*dy);
+      if (dist < inner || dist > r+12) { if(hovered!==-1){hovered=-1;draw(-1);} return; }
+      var a2 = Math.atan2(dy,dx);
+      if (a2 < -Math.PI/2) a2 += Math.PI*2;
+      var a = -Math.PI/2, found = -1;
+      data.forEach(function(d,i){
+        var sl = (d.count/total)*Math.PI*2;
+        var end = a+sl;
+        var norm = a2 < a ? a2 + Math.PI*2 : a2;
+        if (norm >= a && norm < end) found = i;
+        a = end;
+      });
+      if (found !== hovered) { hovered = found; draw(hovered); }
+    });
+    canvas.addEventListener('mouseleave', function(){ hovered=-1; draw(-1); });
+    // animated entry
+  var animFrame = 0, animTotal = 40;
+  function animateIn() {
+    animFrame++;
+    var progress = animFrame / animTotal;
+    var ease = 1 - Math.pow(1 - progress, 3);
+    ctx.clearRect(0,0,260,260);
+    var ang = startAng;
+    data.forEach(function(d,i) {
+      var fullSlice = (d.count / total) * Math.PI * 2;
+      var slice = fullSlice * ease;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, ang, ang + slice);
+      ctx.closePath();
+      ctx.fillStyle = d.color;
+      ctx.fill();
+      ctx.strokeStyle = '#08111F';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ang += fullSlice;
+    });
+    ctx.beginPath();
+    ctx.arc(cx, cy, inner, 0, Math.PI*2);
+    ctx.fillStyle = '#0D1C2E';
+    ctx.fill();
+    ctx.fillStyle = '#F5A623';
+    ctx.font = '900 28px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var displayNum = Math.round(total * ease);
+    ctx.fillText(displayNum, cx, cy-8);
+    ctx.fillStyle = '#6B7FA3';
+    ctx.font = '600 10px DM Sans, sans-serif';
+    ctx.fillText('REPORTS', cx, cy+10);
+    if (animFrame < animTotal) requestAnimationFrame(animateIn);
+    else draw(-1);
+  }
+  animateIn();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+
+
+// ── CANVAS ANIMATIONS ──
+function initVisualPanels() {
+
+  // ── PANEL 1: DRIPPING BUCKET ──
+  var bc = document.getElementById('bucketCanvas');
+  if (bc) {
+    var bx = bc.getContext('2d');
+    var drops = [];
+    var fillLevel = 0;
+    var maxFill = 110;
+    var targetFill = 38; // only 38% full — still waiting
+    var bucketW = 120, bucketH = 80;
+    var bucketX = 40, bucketY = 68;
+    var faucetX = 100, faucetY = 8;
+    var dropInterval = 0;
+
+    function addDrop() {
+      drops.push({ x: faucetX, y: faucetY + 12, vy: 1.2, r: 3, opacity: 1 });
+    }
+
+    function drawBucket(frame) {
+      bx.clearRect(0,0,220,170);
+
+      // faucet pipe
+      bx.strokeStyle = '#6B7FA3';
+      bx.lineWidth = 5;
+      bx.lineCap = 'round';
+      bx.beginPath();
+      bx.moveTo(faucetX, 0);
+      bx.lineTo(faucetX, faucetY + 8);
+      bx.stroke();
+      // faucet head
+      bx.strokeStyle = '#F5A623';
+      bx.lineWidth = 3;
+      bx.beginPath();
+      bx.moveTo(faucetX - 10, faucetY + 8);
+      bx.lineTo(faucetX + 4, faucetY + 8);
+      bx.stroke();
+
+      // bucket outline — trapezoid
+      bx.strokeStyle = '#6B7FA3';
+      bx.lineWidth = 2;
+      bx.beginPath();
+      bx.moveTo(bucketX, bucketY);
+      bx.lineTo(bucketX - 8, bucketY + bucketH);
+      bx.lineTo(bucketX + bucketW + 8, bucketY + bucketH);
+      bx.lineTo(bucketX + bucketW, bucketY);
+      bx.closePath();
+      bx.stroke();
+
+      // water fill inside bucket — animated level
+      var waterH = (fillLevel / 100) * (bucketH - 8);
+      var waterY = bucketY + bucketH - waterH - 2;
+      bx.save();
+      bx.beginPath();
+      bx.moveTo(bucketX + 2, bucketY + 2);
+      bx.lineTo(bucketX - 6, bucketY + bucketH - 2);
+      bx.lineTo(bucketX + bucketW + 6, bucketY + bucketH - 2);
+      bx.lineTo(bucketX + bucketW - 2, bucketY + 2);
+      bx.closePath();
+      bx.clip();
+
+      // water gradient
+      var grad = bx.createLinearGradient(0, waterY, 0, bucketY + bucketH);
+      grad.addColorStop(0, 'rgba(0,150,200,0.7)');
+      grad.addColorStop(1, 'rgba(0,80,140,0.9)');
+      bx.fillStyle = grad;
+      bx.fillRect(bucketX - 8, waterY, bucketW + 16, waterH + 4);
+
+      // wave on water surface
+      bx.strokeStyle = 'rgba(150,220,255,0.5)';
+      bx.lineWidth = 1.5;
+      bx.beginPath();
+      var waveOff = Math.sin(frame * 0.08) * 3;
+      bx.moveTo(bucketX - 6, waterY + waveOff);
+      for (var wx = bucketX - 6; wx <= bucketX + bucketW + 6; wx += 8) {
+        bx.lineTo(wx, waterY + Math.sin((wx + frame * 2) * 0.15) * 2 + waveOff);
+      }
+      bx.stroke();
+      bx.restore();
+
+      // water level % label
+      bx.fillStyle = fillLevel > 50 ? '#F0F4FF' : '#F5A623';
+      bx.font = '700 11px DM Sans, sans-serif';
+      bx.textAlign = 'center';
+      bx.textBaseline = 'middle';
+      if (waterH > 14) bx.fillText(Math.round(fillLevel) + '%', bucketX + bucketW/2, waterY + waterH/2);
+
+      // drops
+      drops.forEach(function(d) {
+        bx.beginPath();
+        bx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        bx.fillStyle = 'rgba(100,190,255,' + d.opacity + ')';
+        bx.fill();
+      });
+
+      // day counter
+      bx.fillStyle = '#6B7FA3';
+      bx.font = '500 10px DM Sans, sans-serif';
+      bx.textAlign = 'center';
+      bx.fillText('Day ' + Math.round(frame * 0.4) % 131 + ' of 131', 110, 162);
+    }
+
+    var frame = 0;
+    function animBucket() {
+      frame++;
+      dropInterval++;
+      // slow drip — every 40 frames
+      if (dropInterval % 40 === 0) addDrop();
+      // move drops
+      drops = drops.filter(function(d) { return d.opacity > 0; });
+      drops.forEach(function(d) {
+        d.y += d.vy;
+        d.vy += 0.15;
+        if (d.y > bucketY + 10) {
+          d.opacity -= 0.08;
+          if (d.r < 2) d.r = 2;
+        }
+        if (d.y >= bucketY + bucketH - 8) d.opacity = 0;
+      });
+      // slowly fill — target 38%
+      if (fillLevel < targetFill) fillLevel += 0.12;
+      drawBucket(frame);
+      requestAnimationFrame(animBucket);
+    }
+    animBucket();
+  }
+
+  // ── PANEL 2: COMMUNITY TANK ──
+  var tc = document.getElementById('tankCanvas');
+  if (tc) {
+    var tx = tc.getContext('2d');
+    var tankFill = 100; // starts full
+    var tankTarget = 15; // drains to 15% — Mirabeau reality
+    var tankFrame = 0;
+    var gaugeAnims = [
+      { label: 'Les Avocats', target: 60, current: 100, color: '#F5A623' },
+      { label: 'Petit Etang', target: 53, current: 100, color: '#FF8C00' },
+      { label: 'Bon Accord',  target: 31, current: 100, color: '#FF4B4B' }
+    ];
+
+    function drawTank(fr) {
+      tx.clearRect(0,0,200,160);
+
+      // tank body
+      var tX = 20, tY = 10, tW = 80, tH = 120;
+      tx.strokeStyle = '#6B7FA3';
+      tx.lineWidth = 2;
+      // tank cylinder outline
+      tx.beginPath();
+      tx.rect(tX, tY, tW, tH);
+      tx.stroke();
+      // tank cap top
+      tx.beginPath();
+      tx.ellipse(tX + tW/2, tY, tW/2, 8, 0, Math.PI, 0);
+      tx.strokeStyle = '#6B7FA3';
+      tx.stroke();
+      // tank base
+      tx.beginPath();
+      tx.ellipse(tX + tW/2, tY + tH, tW/2, 8, 0, 0, Math.PI);
+      tx.stroke();
+
+      // water inside
+      var waterH = (tankFill / 100) * (tH - 4);
+      var waterTop = tY + tH - waterH;
+      tx.save();
+      tx.rect(tX + 1, tY + 1, tW - 2, tH - 2);
+      tx.clip();
+      var tGrad = tx.createLinearGradient(0, waterTop, 0, tY + tH);
+      var col = tankFill > 50 ? 'rgba(0,150,200,0.75)' : tankFill > 25 ? 'rgba(180,100,0,0.7)' : 'rgba(180,30,30,0.7)';
+      var col2 = tankFill > 50 ? 'rgba(0,80,150,0.9)' : tankFill > 25 ? 'rgba(120,60,0,0.85)' : 'rgba(120,20,20,0.85)';
+      tGrad.addColorStop(0, col);
+      tGrad.addColorStop(1, col2);
+      tx.fillStyle = tGrad;
+      tx.fillRect(tX, waterTop, tW, waterH + 4);
+      // wave
+      tx.strokeStyle = 'rgba(200,240,255,0.3)';
+      tx.lineWidth = 1;
+      tx.beginPath();
+      for (var wx2 = tX; wx2 <= tX + tW; wx2 += 6) {
+        var wy = waterTop + Math.sin((wx2 + fr * 3) * 0.2) * 2;
+        wx2 === tX ? tx.moveTo(wx2, wy) : tx.lineTo(wx2, wy);
+      }
+      tx.stroke();
+      tx.restore();
+
+      // % label inside tank
+      tx.fillStyle = tankFill > 30 ? '#F0F4FF' : '#FF4B4B';
+      tx.font = '900 14px DM Sans, sans-serif';
+      tx.textAlign = 'center';
+      tx.textBaseline = 'middle';
+      tx.fillText(Math.round(tankFill) + '%', tX + tW/2, tY + tH/2);
+      tx.font = '600 9px DM Sans, sans-serif';
+      tx.fillStyle = '#6B7FA3';
+      tx.fillText('CAPACITY', tX + tW/2, tY + tH/2 + 14);
+
+      // measurement ticks
+      for (var t2 = 0; t2 <= 4; t2++) {
+        var tickY = tY + tH - (t2/4) * tH;
+        tx.strokeStyle = '#132338';
+        tx.lineWidth = 1;
+        tx.beginPath();
+        tx.moveTo(tX + tW, tickY);
+        tx.lineTo(tX + tW + 6, tickY);
+        tx.stroke();
+        tx.fillStyle = '#6B7FA3';
+        tx.font = '500 8px DM Sans, sans-serif';
+        tx.textAlign = 'left';
+        tx.fillText((t2 * 25) + '%', tX + tW + 8, tickY + 3);
+      }
+
+      // three mini production gauges on right
+      gaugeAnims.forEach(function(g, gi) {
+        var gy = 18 + gi * 44;
+        var gx = 120;
+        var gw = 68, gh = 10;
+        tx.fillStyle = '#132338';
+        tx.beginPath();
+        tx.roundRect ? tx.roundRect(gx, gy + 14, gw, gh, 3) : tx.rect(gx, gy + 14, gw, gh);
+        tx.fill();
+        var barW = (g.current / 100) * gw;
+        tx.fillStyle = g.color;
+        tx.beginPath();
+        tx.roundRect ? tx.roundRect(gx, gy + 14, barW, gh, 3) : tx.rect(gx, gy + 14, barW, gh);
+        tx.fill();
+        tx.fillStyle = '#6B7FA3';
+        tx.font = '500 9px DM Sans, sans-serif';
+        tx.textAlign = 'left';
+        tx.fillText(g.label, gx, gy + 12);
+        tx.fillStyle = g.color;
+        tx.font = '700 9px DM Sans, sans-serif';
+        tx.textAlign = 'right';
+        tx.fillText(Math.round(g.current) + '%', gx + gw, gy + 12);
+      });
+    }
+
+    var tFrame = 0;
+    function animTank() {
+      tFrame++;
+      // drain slowly
+      if (tankFill > tankTarget) tankFill -= 0.08;
+      // drain gauges
+      gaugeAnims.forEach(function(g) {
+        if (g.current > g.target) g.current -= 0.06;
+      });
+      drawTank(tFrame);
+      requestAnimationFrame(animTank);
+    }
+    animTank();
+  }
+
+  // ── PANEL 3: SIGNAL THREAD BREAK ──
+  var sc = document.getElementById('threadCanvas');
+  if (sc) {
+    var sx = sc.getContext('2d');
+    var stages = [
+      { label: 'Stage 1 — Signal Collection', status: 'ok' },
+      { label: 'Stage 2 — Cross-Reference', status: 'ok' },
+      { label: 'Stage 3 — Pattern Detection', status: 'ok' },
+      { label: 'Stage 4 — THE GAP', status: 'break' },
+      { label: 'Stage 5 — Scoring', status: 'pending' },
+      { label: 'Stage 8 — Decision Support', status: 'pending' }
+    ];
+    var pulseFrame = 0;
+
+    function drawThread(fr) {
+      sx.clearRect(0,0,260,170);
+      var lineX = 16;
+      var startY = 10;
+      var stepH = 26;
+
+      stages.forEach(function(st, i) {
+        var y = startY + i * stepH;
+        var isBreak = st.status === 'break';
+        var isOk = st.status === 'ok';
+
+        // connector line between dots
+        if (i < stages.length - 1) {
+          sx.strokeStyle = isOk ? '#00C9B1' : isBreak ? 'rgba(255,75,75,0.35)' : '#132338';
+          sx.lineWidth = 2;
+          sx.setLineDash(isOk ? [] : [3,3]);
+          sx.beginPath();
+          sx.moveTo(lineX, y + 9);
+          sx.lineTo(lineX, y + stepH - 2);
+          sx.stroke();
+          sx.setLineDash([]);
+        }
+
+        // dot
+        var dotR = 7;
+        if (isBreak) {
+          var pulse = Math.sin(fr * 0.1) * 0.4 + 0.6;
+          sx.beginPath();
+          sx.arc(lineX, y + 4, dotR + 4, 0, Math.PI * 2);
+          sx.fillStyle = 'rgba(255,75,75,' + (pulse * 0.18) + ')';
+          sx.fill();
+          sx.beginPath();
+          sx.arc(lineX, y + 4, dotR, 0, Math.PI * 2);
+          sx.fillStyle = '#FF4B4B';
+          sx.fill();
+          sx.fillStyle = '#fff';
+          sx.font = '700 8px DM Sans, sans-serif';
+          sx.textAlign = 'center';
+          sx.textBaseline = 'middle';
+          sx.fillText('!', lineX, y + 4);
+        } else if (isOk) {
+          sx.beginPath();
+          sx.arc(lineX, y + 4, dotR, 0, Math.PI * 2);
+          sx.fillStyle = '#00C9B1';
+          sx.fill();
+          sx.strokeStyle = '#fff';
+          sx.lineWidth = 1.5;
+          sx.beginPath();
+          sx.moveTo(lineX - 3, y + 4);
+          sx.lineTo(lineX - 1, y + 6.5);
+          sx.lineTo(lineX + 3, y + 1);
+          sx.stroke();
+        } else {
+          sx.beginPath();
+          sx.arc(lineX, y + 4, dotR, 0, Math.PI * 2);
+          sx.fillStyle = '#132338';
+          sx.strokeStyle = '#6B7FA3';
+          sx.lineWidth = 1.5;
+          sx.fill();
+          sx.stroke();
+        }
+
+        // stage label — truncated to stay in left column (max 130px wide)
+        sx.fillStyle = isBreak ? '#FF4B4B' : isOk ? '#F0F4FF' : '#6B7FA3';
+        sx.font = isBreak ? '700 9.5px DM Sans, sans-serif' : '500 9px DM Sans, sans-serif';
+        sx.textAlign = 'left';
+        sx.textBaseline = 'middle';
+        var label = isBreak ? 'Stage 4 — THE GAP' : st.label;
+        sx.fillText(label, lineX + 13, y + 4);
+
+        // highlight row for break
+        if (isBreak) {
+          sx.fillStyle = 'rgba(255,75,75,0.08)';
+          sx.strokeStyle = 'rgba(255,75,75,0.3)';
+          sx.lineWidth = 1;
+          sx.beginPath();
+          sx.rect(0, y - 5, 155, 20);
+          sx.fill();
+          sx.stroke();
+        }
+      });
+
+      // 131 DAYS callout — bottom right, clear of all labels
+      var bx2 = 163, by2 = 86, bw2 = 90, bh2 = 52;
+      var pulseBg = Math.sin(fr * 0.07) * 0.05 + 0.12;
+      sx.fillStyle = 'rgba(255,75,75,' + pulseBg + ')';
+      sx.strokeStyle = '#FF4B4B';
+      sx.lineWidth = 1.5;
+      sx.beginPath();
+      sx.rect(bx2, by2, bw2, bh2);
+      sx.fill();
+      sx.stroke();
+      sx.fillStyle = '#FF4B4B';
+      sx.font = '900 14px DM Sans, sans-serif';
+      sx.textAlign = 'center';
+      sx.textBaseline = 'middle';
+      sx.fillText('131 DAYS', bx2 + bw2/2, by2 + 16);
+      sx.font = '600 8px DM Sans, sans-serif';
+      sx.fillStyle = '#FF9090';
+      sx.fillText('NO CUMULATIVE', bx2 + bw2/2, by2 + 31);
+      sx.fillText('ADVISORY', bx2 + bw2/2, by2 + 43);
+
+      // arrow from stage 4 row to callout box
+      var arrowY = startY + 3 * stepH + 4;
+      sx.strokeStyle = 'rgba(255,75,75,0.5)';
+      sx.lineWidth = 1;
+      sx.setLineDash([2,2]);
+      sx.beginPath();
+      sx.moveTo(155, arrowY);
+      sx.lineTo(bx2, by2 + bh2/2);
+      sx.stroke();
+      sx.setLineDash([]);
+    }
+
+    var sFrame = 0;
+    function animThread() {
+      sFrame++;
+      drawThread(sFrame);
+      requestAnimationFrame(animThread);
+    }
+    animThread();
+  }
+}
+
+// Run panels after load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVisualPanels);
+} else {
+  setTimeout(initVisualPanels, 100);
+}
+
+// ── HERO FADE IN ──
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    var hero = document.getElementById('heroPanel');
+    if (hero) hero.style.opacity = '1';
+  }, 200);
+
+  // ── COUNT UP ANIMATION ──
+  var els = document.querySelectorAll('.countup');
+  els.forEach(function(el) {
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    var duration = 1600;
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * ease);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    setTimeout(function() { requestAnimationFrame(step); }, 400);
+  });
+});
+
+// ── PIE CHART — re-animate on tab click ──
+var origShowSection = showSection;
+showSection = function(id) {
+  origShowSection.call(this, id);
+  if (id === 'parish') {
+    var canvas = document.getElementById('parishPie');
+    if (canvas && canvas._animReady) {
+      canvas._runAnim();
+    }
+  }
+  if (id === 'thread') {
+    updateThreadSpine();
+  }
+};
+
+// ── SIGNAL THREAD SPINE ──
+function updateThreadSpine() {
+  var wrap = document.querySelector('.thread-wrap');
+  var spine = document.getElementById('threadSpine');
+  var brk = document.getElementById('threadBreak');
+  if (!wrap || !spine) return;
+  var stages = wrap.querySelectorAll('.thread-stage');
+  if (!stages.length) return;
+  // find stage 4 (index 3) — the flag stage
+  var flagStage = null;
+  stages.forEach(function(s, i) {
+    var dot = s.querySelector('.thread-dot');
+    if (dot && dot.classList.contains('flag') && !flagStage) flagStage = s;
+  });
+  if (flagStage && brk) {
+    brk.style.display = 'block';
+    var wrapTop = wrap.getBoundingClientRect().top;
+    var stageTop = flagStage.getBoundingClientRect().top;
+    var offset = stageTop - wrapTop + wrap.scrollTop;
+    brk.style.top = (offset - 10) + 'px';
+    brk.style.height = '50px';
+    if (spine) spine.style.background = 'var(--border)';
+  }
+}
+
+// Re-run spine on thread select change
+var threadSel = document.getElementById('threadSelect');
+if (threadSel) {
+  threadSel.addEventListener('change', function() {
+    setTimeout(updateThreadSpine, 100);
+  });
+}
+
+
+// ── RIPPLE BACKGROUND ──
+(function() {
+  function initRipple() {
+    var rc = document.getElementById('rippleCanvas');
+    if (!rc) return;
+    var rx = rc.getContext('2d');
+    var ripples = [];
+    var W = rc.width, H = rc.height;
+
+    function addRipple() {
+      ripples.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: 2,
+        maxR: 60 + Math.random() * 80,
+        alpha: 0.8,
+        speed: 0.6 + Math.random() * 0.8
+      });
+    }
+
+    setInterval(addRipple, 700);
+    addRipple(); addRipple(); addRipple(); addRipple(); addRipple();
+
+    function drawRipples() {
+      rx.clearRect(0, 0, W, H);
+      // deep water background gradient
+      var bgGrad = rx.createLinearGradient(0, 0, 0, H);
+      bgGrad.addColorStop(0, 'rgba(0,20,60,0.95)');
+      bgGrad.addColorStop(0.4, 'rgba(0,30,80,0.9)');
+      bgGrad.addColorStop(1, 'rgba(0,15,40,0.95)');
+      rx.fillStyle = bgGrad;
+      rx.fillRect(0, 0, W, H);
+      // horizontal water layers — multiple wave bands
+      for (var wi = 0; wi < 8; wi++) {
+        var baseY = H * (0.15 + wi * 0.1);
+        rx.strokeStyle = 'rgba(' + (20 + wi*8) + ',' + (80 + wi*12) + ',180,0.25)';
+        rx.lineWidth = 1.5;
+        rx.beginPath();
+        for (var wx = 0; wx <= W; wx += 6) {
+          var wy = baseY + Math.sin((wx * 0.008) + Date.now() * 0.0008 + wi * 0.9) * (8 + wi * 2);
+          wx === 0 ? rx.moveTo(wx, wy) : rx.lineTo(wx, wy);
+        }
+        rx.stroke();
+      }
+      // light caustic patches
+      for (var ci = 0; ci < 3; ci++) {
+        var cx2 = W * (0.2 + ci * 0.3);
+        var cy2 = H * (0.3 + Math.sin(Date.now() * 0.0005 + ci) * 0.1);
+        var grad2 = rx.createRadialGradient(cx2, cy2, 0, cx2, cy2, 120);
+        grad2.addColorStop(0, 'rgba(0,150,220,0.12)');
+        grad2.addColorStop(1, 'rgba(0,0,0,0)');
+        rx.fillStyle = grad2;
+        rx.fillRect(0, 0, W, H);
+      }
+      // drip drop ripples
+      ripples = ripples.filter(function(rp) { return rp.alpha > 0.015; });
+      ripples.forEach(function(rp) {
+        rx.beginPath();
+        rx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+        rx.strokeStyle = 'rgba(80,190,255,' + rp.alpha + ')';
+        rx.lineWidth = 1.5;
+        rx.stroke();
+        // inner ring
+        if (rp.r > 8) {
+          rx.beginPath();
+          rx.arc(rp.x, rp.y, rp.r * 0.6, 0, Math.PI * 2);
+          rx.strokeStyle = 'rgba(120,210,255,' + (rp.alpha * 0.5) + ')';
+          rx.lineWidth = 0.8;
+          rx.stroke();
+        }
+        rp.r += rp.speed;
+        rp.alpha *= 0.968;
+      });
+      requestAnimationFrame(drawRipples);
+    }
+    drawRipples();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRipple);
+  } else { setTimeout(initRipple, 50); }
+})();
+
+// ── PROGRESS BARS ANIMATE IN ──
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.querySelectorAll('.count-bar').forEach(function(bar) {
+      bar.style.width = bar.getAttribute('data-width') || '0%';
+    });
+  }, 600);
+});
+
+</script>
+</body>
+</html>
