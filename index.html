@@ -581,8 +581,8 @@
 
   function initMap() {
     map = L.map('map', { zoomControl:true }).setView([12.1165,-61.6789], 11);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution:'© OpenStreetMap © CARTO', maxZoom:18
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:'© OpenStreetMap contributors', maxZoom:19
     }).addTo(map);
   }
 
